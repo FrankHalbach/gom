@@ -7,7 +7,8 @@
     "build": "nuxt-ts build",
     "start": "nuxt-ts start",
     "export": "nuxt-ts export",
-    "serve": "nuxt-ts serve"
+    "serve": "nuxt-ts serve",
+    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
     "@nuxt/typescript-runtime": "^0.4.10",
@@ -15,6 +16,7 @@
   },
   "devDependencies": {
     "@nuxt/typescript-build": "^1.0.3",
-    "@nuxtjs/vuetify": "^1.11.2"
+    "@nuxtjs/vuetify": "^1.11.2",
+    "push-dir": "^0.4.1"
   }
 }
