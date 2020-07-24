@@ -1,4 +1,4 @@
-interface Variant {
+export interface Variant {
     id: number
     title: string
     salesPrice:SalesPrice[]
@@ -7,42 +7,75 @@ interface Variant {
     partVolumeVehicle:()=> number | null
     partVolumeForecast:PartVolumeForecast
     validPartVolume: ()=> number | null
-    addVehicle:(title: string, volume: number, iRate: number)=>void
+    addVehicle:(title: string, volume: number, iRate: number,sopDate:Date,eopDate:Date)=>void
     addSalesPrice:(effectiveDate:Date,reasonCode:ReasonCode,priceChange:number)=>void
+    volumeAccounts:()=>IFSAccount[]
+    salesAccounts:()=>IFSAccount[]
   }
 
-interface SalesPrice{
+export interface SalesPrice{
     effectiveDate:Date
     reasonCode:ReasonCode
     priceChange: number
 
 }
 
-enum ReasonCode {
+export enum ReasonCode {
     BasePrice ,
     LTA ,
     LTAP,
-    EDD ,
-    Other 
+    BL,
+    BLP,
+    Claim
 }
 
-interface Vehicle {
+export enum YOYOptions{
+    RollOn,
+    RollOff,
+    Volume
+}
+
+export interface Vehicle {
     title:string
     volume: number
-    iRate: number    
-    partVolume: () => number;
+    iRate: number
+    sop:Date
+    eop:Date    
+    partVolume:() => number    
+    yoyStatus:() => YOYOptions
+   
+
 }
 
-interface Actuals {
+export interface Actuals {
     netSales:number | null
     volume:number | null
 }
 
-interface PartVolumeForecast {
+ export interface PartVolumeForecast {
     override:number | null
     forecast:number | null     
 }
 
+export interface IFSAccount{
+    label:IFSAccountLabel,
+    value:number | null
 
+}
 
-export {Variant,SalesPrice,ReasonCode,Vehicle,Actuals,PartVolumeForecast}
+export enum IFSAccountLabel{
+    Volume_Vehicle,
+    Volume_Override,
+    Volume_Forecast,
+    Volume_Actual,
+    Volume,
+    Sales,
+    Sales_LTA,
+    Sales_LTAP,
+    Sales_BL,
+    Sales_BLP,   
+    Sales_Claim,  
+    Sales_Var,
+    NetSales
+}
+

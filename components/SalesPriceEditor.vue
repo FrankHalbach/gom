@@ -1,7 +1,7 @@
 <template>
   <v-form>
     <v-container>
-      <v-row no-gutters>
+      <v-row>
         <v-col cols="12" md="4">
           <v-select
             v-model="salesPrice.reasonCode"
@@ -14,8 +14,8 @@
         <v-col cols="12" md="4">
           <v-text-field
             label="Price Change"
-            v-model="salesPrice.priceChange"
-            :min="0"
+            v-model.number="salesPrice.priceChange"
+            :min="-10000"
             :max="10000"
             type="number"
           ></v-text-field>
@@ -55,7 +55,6 @@ export default Vue.extend({
   data: () => ({
     menu: false,
   })  
-  
 });
 </script>
 

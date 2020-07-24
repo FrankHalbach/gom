@@ -1,5 +1,7 @@
-import { Variant, SalesPrice, Vehicle, ReasonCode, Actuals, PartVolumeForecast } from './Interfaces';
-
+import { Variant, SalesPrice, Vehicle, ReasonCode, Actuals, PartVolumeForecast, YOYOptions } from './Interfaces';
+import { calcYOYStatus } from './YOYCalculator'
+import { calcVolumeAccounts, calcSalesAccounts } from '~/logic/VariantAccountCalculator'
+import {validPartVolume} from '~/logic/ValidPartVolumeCaculator'
 
 
 function createVariant(id: number, title: string): Variant {
@@ -8,18 +10,22 @@ function createVariant(id: number, title: string): Variant {
     variant.title = title
     variant.salesPrice = [] as SalesPrice[]
     variant.vehicles = [] as Vehicle[]
-    variant.actuals={} as Actuals
-    variant.partVolumeForecast={} as PartVolumeForecast    
-    variant.partVolumeVehicle=()=>variant.vehicles.map(v=>v.partVolume()).reduce((a,b) => a + b )  
-    
+    variant.actuals = {} as Actuals
+    variant.partVolumeForecast = {} as PartVolumeForecast
+    variant.partVolumeVehicle = () => variant.vehicles.map(v => v.partVolume()).reduce((a, b) => a + b)
+    variant.volumeAccounts = () => calcVolumeAccounts(variant)
+    variant.salesAccounts = () => calcSalesAccounts(variant)
 
-    variant.addVehicle = (title: string, volume: number, iRate: number) => {
+
+    variant.addVehicle = (title: string, volume: number, iRate: number, sopDate: Date, eopDate: Date) => {
         const vehicle = {} as Vehicle;
+        vehicle.sop = sopDate
+        vehicle.eop = eopDate
         vehicle.title = title
         vehicle.volume = volume
         vehicle.iRate = iRate
-        vehicle.partVolume =() => vehicle.volume*(vehicle.iRate/100)        
-
+        vehicle.partVolume = () => vehicle.volume * (vehicle.iRate / 100)
+        vehicle.yoyStatus = () => calcYOYStatus(vehicle)
         variant.vehicles.push(vehicle)
     }
 
@@ -32,21 +38,17 @@ function createVariant(id: number, title: string): Variant {
         variant.salesPrice.push(sp)
     }
 
-       
-                    
-    variant.validPartVolume =() => {
-        const actual = variant.actuals.volume
-        const forecast= variant.partVolumeForecast.forecast
-        const override= variant.partVolumeForecast.override
-        const vehicle = variant.vehicles.map(v=>v.partVolume()).reduce((a,b) => a + b )   
 
-        if(Number(actual)) return actual
-        if(Number(forecast)) return forecast
-        if(Number(override)) return override
-        return vehicle ?? 0        
+
+    variant.validPartVolume = () => {
+        const actual = variant.actuals.volume
+        const forecast = variant.partVolumeForecast.forecast
+        const override = variant.partVolumeForecast.override
+        const vehicle = variant.vehicles.map(v => v.partVolume()).reduce((a, b) => a + b)
+        return validPartVolume(actual,forecast,override,vehicle)        
     }
 
-   
+
 
     return variant;
 }

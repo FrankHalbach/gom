@@ -1,6 +1,6 @@
 <template>
   <v-app dark>
-    <v-navigation-drawer
+    <!-- <v-navigation-drawer
       v-model="drawer"            
       fixed
       app
@@ -21,13 +21,13 @@
           </v-list-item-content>
         </v-list-item>
       </v-list>
-    </v-navigation-drawer>
+    </v-navigation-drawer> -->
     <v-app-bar
       clipped
       fixed
       app
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />      
+      <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" />       -->
       <v-toolbar-title v-text="title" />      
     </v-app-bar>
 
