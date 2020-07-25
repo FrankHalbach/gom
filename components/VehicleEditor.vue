@@ -2,17 +2,8 @@
   <v-container>
     <v-row>
       <v-col cols="12" md="9">
-        <v-text-field
-          dense
-          v-model="vehicle.title"
-          name="Vehicle Title"
-          label="Title"
-          
-        ></v-text-field>
+        <v-text-field dense v-model="vehicle.title" name="Vehicle Title" label="Title"></v-text-field>
       </v-col>
-      <!-- <v-col cols="12" md="3">
-        <v-btn small color="error" @click="$emit('delete',$event)">delete</v-btn>
-      </v-col> -->
     </v-row>
 
     <v-text-field dense label="YOY Status" readonly :value="yoyStatus"></v-text-field>
@@ -30,30 +21,26 @@
       type="number"
     ></v-text-field>
 
-     <v-slider
-            v-model="vehicle.iRate"
-            label="IRate"
-            class="align-center"
-            max="100"
-            min="0"
-            hide-details
-             thumb-label
-          >
-            <template v-slot:append>
-              <v-text-field
-                v-model="vehicle.iRate"
-                class="mt-0 pt-0"
-                hide-details
-                single-line
-                type="number"
-                style="width: 60px"
-              ></v-text-field>
-            </template>
-          </v-slider>
-
-    <!-- <div class="purple primary text-center">
-        <span class="white--text">YOY Status: {{yoyStatus}}</span>
-    </div>-->
+    <v-slider
+      v-model="vehicle.iRate"
+      label="IRate"
+      class="align-center"
+      max="100"
+      min="0"
+      hide-details
+      thumb-label
+    >
+      <template v-slot:append>
+        <v-text-field
+          v-model="vehicle.iRate"
+          class="mt-0 pt-0"
+          hide-details
+          single-line
+          type="number"
+          style="width: 60px"
+        ></v-text-field>
+      </template>
+    </v-slider>
   </v-container>
 </template>
 

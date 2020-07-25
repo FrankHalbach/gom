@@ -14,7 +14,7 @@ export const calcVolumeAccounts = (variant: Variant): IFSAccount[] => {
     const actual = variant.actuals.volume
     const forecast = variant.partVolumeForecast.forecast
     const override = variant.partVolumeForecast.override
-    const vehicle = variant.vehicles.map(v => v.partVolume()).reduce((a, b) => a + b)
+    const vehicle = variant.vehicles.length > 0 ? variant.vehicles.map(v => v.partVolume()).reduce((a, b) => a + b):0
     const volume = validPartVolume(actual, forecast, override, vehicle)
 
     volumeAccounts.push(
@@ -27,9 +27,12 @@ export const calcVolumeAccounts = (variant: Variant): IFSAccount[] => {
     return volumeAccounts;
 }
 
-const getPriceSum = (variant: Variant, reasonCode: ReasonCode): number => {
-    const prices = variant.salesPrice.filter(s => s.reasonCode == reasonCode)
-    if (prices.length == 0) return 0
+const getPriceSum = (variant: Variant, reasonCode?: ReasonCode): number => {
+
+    const prices = reasonCode ? variant.salesPrice.filter(s => s.reasonCode == reasonCode) : variant.salesPrice
+
+    if (prices.length == 0)
+        return 0
 
     return prices.map(p => p.priceChange)?.reduce((a, b) => a + b) ?? 0
 }
@@ -46,7 +49,8 @@ export const calcSalesAccounts = (variant: Variant): IFSAccount[] => {
     const salesClaim: number = getPriceSum(variant, ReasonCode.Claim) * volume
 
     //netsales
-    const netSales: number = variant.salesPrice.map(v => v.priceChange).reduce((a, b) => a + b) * volume
+    // const netSales: number = variant.salesPrice.map(v => v.priceChange).reduce((a, b) => a + b) * volume
+    const netSales: number = getPriceSum(variant, ReasonCode.Claim) * volume
 
     salesAccounts.push({ label: IFSAccountLabel.Sales, value: sales })
     salesAccounts.push({ label: IFSAccountLabel.Sales_LTA, value: salesLTA })

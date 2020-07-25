@@ -2,8 +2,9 @@
   <v-form>
     <v-container>
       <v-row>
-        <v-col cols="12" md="4">
-          <v-select
+        <v-col cols="12" md="2">
+          <v-select 
+            dense
             v-model="salesPrice.reasonCode"
             :items="salesPriceOptions"
             label="ReasonCode"
@@ -11,8 +12,9 @@
             item-value="id"
           ></v-select>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="2">
           <v-text-field
+            dense
             label="Price Change"
             v-model.number="salesPrice.priceChange"
             :min="-10000"
@@ -20,7 +22,7 @@
             type="number"
           ></v-text-field>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="2">
           <v-btn small  color="error" @click="$emit('delete',$event)"> delete</v-btn>
         </v-col>
       </v-row>
@@ -44,17 +46,14 @@ export default Vue.extend({
     salesPriceOptions() {
       const keys = Object.keys(ReasonCode).filter(
         (k) => typeof ReasonCode[k as any] === "number"
-      ); // ["A", "B"]
+      ); 
       const values = keys.map((key) => ({
         id: ReasonCode[key as any],
         title: key,
       }));
       return values;
     },
-  },
-  data: () => ({
-    menu: false,
-  })  
+  } 
 });
 </script>
 

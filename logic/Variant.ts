@@ -44,7 +44,7 @@ function createVariant(id: number, title: string): Variant {
         const actual = variant.actuals.volume
         const forecast = variant.partVolumeForecast.forecast
         const override = variant.partVolumeForecast.override
-        const vehicle = variant.vehicles.map(v => v.partVolume()).reduce((a, b) => a + b)
+        const vehicle = variant.vehicles.length > 0 ? variant.vehicles.map(v => v.partVolume()).reduce((a, b) => a + b):0
         return validPartVolume(actual,forecast,override,vehicle)        
     }
 
