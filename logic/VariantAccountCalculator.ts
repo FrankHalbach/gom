@@ -49,8 +49,7 @@ export const calcSalesAccounts = (variant: Variant): IFSAccount[] => {
     const salesClaim: number = getPriceSum(variant, ReasonCode.Claim) * volume
 
     //netsales
-    // const netSales: number = variant.salesPrice.map(v => v.priceChange).reduce((a, b) => a + b) * volume
-    const netSales: number = getPriceSum(variant, ReasonCode.Claim) * volume
+    const netSales: number = getPriceSum(variant) * volume
 
     salesAccounts.push({ label: IFSAccountLabel.Sales, value: sales })
     salesAccounts.push({ label: IFSAccountLabel.Sales_LTA, value: salesLTA })
