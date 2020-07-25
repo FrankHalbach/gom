@@ -39,27 +39,42 @@ const getPriceSum = (variant: Variant, reasonCode?: ReasonCode): number => {
 
 export const calcSalesAccounts = (variant: Variant): IFSAccount[] => {
     const salesAccounts = [] as IFSAccount[];
+    
     const volume = variant.validPartVolume() ?? 0
-    //Sales
+    const actualSales = variant.actuals.netSales;
+    
+    //calc sales by reason code
     const sales: number = getPriceSum(variant, ReasonCode.BasePrice) * volume
     const salesLTA: number = getPriceSum(variant, ReasonCode.LTA) * volume
     const salesLTAP: number = getPriceSum(variant, ReasonCode.LTAP) * volume
     const salesBL: number = getPriceSum(variant, ReasonCode.BL) * volume
     const salesBLP: number = getPriceSum(variant, ReasonCode.BLP) * volume
     const salesClaim: number = getPriceSum(variant, ReasonCode.Claim) * volume
+ 
+    //netsales - all reason codes
+    const netSales:number = getPriceSum(variant) * volume
 
-    //netsales
-    const netSales: number = getPriceSum(variant) * volume
+    let salesVar:number = 0
+    let finalNetSales:number = netSales
+    
+    //if we have actuals we need to handle variances between cacluated actuals and "actual"
+    if(actualSales){
+        salesVar=actualSales-netSales
+        finalNetSales = actualSales ?? netSales
+    }
 
+    //insert in resultset
     salesAccounts.push({ label: IFSAccountLabel.Sales, value: sales })
     salesAccounts.push({ label: IFSAccountLabel.Sales_LTA, value: salesLTA })
     salesAccounts.push({ label: IFSAccountLabel.Sales_LTAP, value: salesLTAP })
     salesAccounts.push({ label: IFSAccountLabel.Sales_BL, value: salesBL })
     salesAccounts.push({ label: IFSAccountLabel.Sales_BLP, value: salesBLP })
-    salesAccounts.push({ label: IFSAccountLabel.Sales_Claim, value: salesClaim })
-    salesAccounts.push({ label: IFSAccountLabel.NetSales, value: netSales })
+    salesAccounts.push({ label: IFSAccountLabel.Sales_Claim, value: salesClaim })    
+    salesAccounts.push({ label:IFSAccountLabel.Sales_Var, value: salesVar})
+    salesAccounts.push({ label: IFSAccountLabel.NetSales, value: finalNetSales})
+  
 
-    // get sum of each account label
+   
     return salesAccounts
 
 }
