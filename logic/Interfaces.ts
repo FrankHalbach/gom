@@ -79,3 +79,30 @@ export enum IFSAccountLabel{
     NetSales
 }
 
+
+export interface YOYReport {
+    account:IFSAccountLabel,
+    forecast:number,
+    actual:number,
+    variance:()=>number,
+    varVehicleVolumeRollOn:number,
+    varVehicleVolumeRollOff:number,
+    varVehicleVolumeVolume:number,
+    varTotVehicleVolume:()=>number,
+    varIRateRollOn:number,
+    varIRateRollOff:number,
+    varIRateVolume:number,
+    varTotIRateVolume:()=>number
+
+}
+
+export interface VehicleVarianceKPI{
+    partVolumeVariance:number,
+    partVolumeVarianceVehicle:number,
+    partVolumeVarianceIRate:number,
+    mixRollOn:number,
+    mixRollOff:number,
+    mixVolume:number,
+    
+
+}

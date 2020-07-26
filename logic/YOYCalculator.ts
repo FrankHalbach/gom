@@ -1,26 +1,54 @@
-import { YOYOptions, Vehicle  } from '~/logic/Interfaces'
+/* 
+This calculator holds the business logic for the variances and growth over markets caclculation between two forecast.
+input will be two variants (forecast, actual) 
 
-//from SOP
-const rollOnPeriodDays:number = 365
-//before EoP
-const rollOffPeriodDays:number = 365
+*/
 
-const rollOnDate :Date= new Date()
-const rollOffDate:Date= new Date()
+import { IFSAccountLabel, Variant,YOYReport, IFSAccount, VehicleVarianceKPI } from '~/logic/Interfaces'
+import { calcVehicleKPIs } from '~/logic/VehicleVarianceCalculator'
 
-rollOnDate.setDate(rollOnDate.getDate() - rollOnPeriodDays); 
-rollOffDate.setDate(rollOffDate.getDate() + rollOffPeriodDays)
+export const calcYOYReport=(forecast:Variant,actual:Variant):YOYReport[]=>{
 
-//logic
-const calcYOYStatus=(vehicle:Vehicle):YOYOptions => {
-  
-    if(vehicle.sop>rollOnDate)
-        return YOYOptions.RollOn
-   
-    if(vehicle.eop<rollOffDate)
-        return YOYOptions.RollOff
-    
-        return YOYOptions.Volume
+    const report = [] as YOYReport[]
+
+    const vehKPI =  calcVehicleKPIs(forecast,actual)
+      
+    report.push(createVarAccount(IFSAccountLabel.Volume,forecast.volumeAccounts(),actual.volumeAccounts(),vehKPI))
+    report.push(createVarAccount(IFSAccountLabel.Sales,forecast.salesAccounts(),actual.salesAccounts(),vehKPI))
+    report.push(createVarAccount(IFSAccountLabel.Sales_LTA,forecast.salesAccounts(),actual.salesAccounts(),vehKPI))
+    report.push(createVarAccount(IFSAccountLabel.Sales_LTAP,forecast.salesAccounts(),actual.salesAccounts(),vehKPI))
+    report.push(createVarAccount(IFSAccountLabel.Sales_BL,forecast.salesAccounts(),actual.salesAccounts(),vehKPI))
+    report.push(createVarAccount(IFSAccountLabel.Sales_BLP,forecast.salesAccounts(),actual.salesAccounts(),vehKPI))
+    report.push(createVarAccount(IFSAccountLabel.Sales_Claim,forecast.salesAccounts(),actual.salesAccounts(),vehKPI))
+    report.push(createVarAccount(IFSAccountLabel.Sales_Var,forecast.salesAccounts(),actual.salesAccounts(),vehKPI))
+    report.push(createVarAccount(IFSAccountLabel.NetSales,forecast.salesAccounts(),actual.salesAccounts(),vehKPI))
+
+
+    return report
+
 }
 
-export { calcYOYStatus }
+
+
+const createVarAccount=(account:IFSAccountLabel,fcst:IFSAccount[],act:IFSAccount[], vehKPI:VehicleVarianceKPI):YOYReport=>{    
+    
+    const acc = {} as YOYReport
+
+    acc.account = account
+    acc.forecast = fcst.find(a=>a.label==account)?.value?? 0
+    acc.actual = act.find(a=>a.label==account)?.value?? 0 
+    acc.variance = () => acc.actual-acc.forecast
+
+    acc.varVehicleVolumeRollOn = vehKPI.mixRollOn *  vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.variance(),
+    acc.varVehicleVolumeRollOff = vehKPI.mixRollOff * vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.variance(),
+    acc.varVehicleVolumeVolume = vehKPI.mixVolume * vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.variance(),
+    acc.varTotVehicleVolume = () => acc.varVehicleVolumeRollOn+acc.varVehicleVolumeRollOff+acc.varVehicleVolumeVolume
+
+    acc.varIRateRollOn = vehKPI.mixRollOn * vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance * acc.variance(),
+    acc.varIRateRollOff = vehKPI.mixRollOff * vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance * acc.variance(),
+    acc.varIRateVolume = vehKPI.mixVolume * vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance * acc.variance(),
+    acc.varTotIRateVolume = () => acc.varIRateRollOn+acc.varIRateRollOff+acc.varIRateVolume
+
+    return acc
+ 
+}

@@ -15,14 +15,14 @@
     <v-text-field
       dense
       label="Vehicle Volume"
-      v-model="vehicle.volume"
+      v-model.number="vehicle.volume"
       :min="0"
       :max="100000"
       type="number"
     ></v-text-field>
 
     <v-slider
-      v-model="vehicle.iRate"
+      v-model.number="vehicle.iRate"
       label="IRate"
       class="align-center"
       max="100"
@@ -32,7 +32,7 @@
     >
       <template v-slot:append>
         <v-text-field
-          v-model="vehicle.iRate"
+          v-model.number="vehicle.iRate"
           class="mt-0 pt-0"
           hide-details
           single-line

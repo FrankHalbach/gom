@@ -9,12 +9,12 @@ import { validPartVolume } from '~/logic/ValidPartVolumeCaculator'
 
 export const calcVolumeAccounts = (variant: Variant): IFSAccount[] => {
 
-    const volumeAccounts = [] as IFSAccount[];
+    const volumeAccounts = [] as IFSAccount[]
 
     const actual = variant.actuals.volume
     const forecast = variant.partVolumeForecast.forecast
     const override = variant.partVolumeForecast.override
-    const vehicle = variant.vehicles.length > 0 ? variant.vehicles.map(v => v.partVolume()).reduce((a, b) => a + b):0
+    const vehicle =variant.vehicles.map(v => v.partVolume()).reduce((a, b) => a + b,0)
     const volume = validPartVolume(actual, forecast, override, vehicle)
 
     volumeAccounts.push(
@@ -27,15 +27,7 @@ export const calcVolumeAccounts = (variant: Variant): IFSAccount[] => {
     return volumeAccounts;
 }
 
-const getPriceSum = (variant: Variant, reasonCode?: ReasonCode): number => {
 
-    const prices = reasonCode ? variant.salesPrice.filter(s => s.reasonCode == reasonCode) : variant.salesPrice
-
-    if (prices.length == 0)
-        return 0
-
-    return prices.map(p => p.priceChange)?.reduce((a, b) => a + b) ?? 0
-}
 
 export const calcSalesAccounts = (variant: Variant): IFSAccount[] => {
     const salesAccounts = [] as IFSAccount[];
@@ -77,4 +69,14 @@ export const calcSalesAccounts = (variant: Variant): IFSAccount[] => {
    
     return salesAccounts
 
+}
+
+const getPriceSum = (variant: Variant, reasonCode?: ReasonCode): number => {
+
+    const prices = reasonCode ? variant.salesPrice.filter(s => s.reasonCode == reasonCode) : variant.salesPrice
+
+    if (prices.length == 0)
+        return 0
+
+    return prices.map(p => p.priceChange)?.reduce((a, b) => a + b,0)
 }
