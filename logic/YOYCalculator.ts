@@ -1,13 +1,13 @@
 /* 
 This calculator holds the business logic for the variances and growth over markets caclculation between two forecast.
 input will be two variants (forecast, actual) 
+TODO: GOM cacl logic to be added
 */
 
-import { IFSAccountLabel, Variant, YOYReport, IFSAccount, VehicleVarianceKPI } from '~/logic/Interfaces'
+import { IFSAccountLabel, Variant, YOYReport, VehicleVarianceKPI } from '~/logic/Interfaces'
 import { calcVehicleKPIs } from '~/logic/VehicleVarianceCalculator'
-import { actual } from '~/static/launchData'
 
-// todo : add FX and override fall-back in case of no vehicles assigned. do we need other?
+
 export const calcYOYReport = (forecast: Variant, actual: Variant): YOYReport[] => {
 
     const report = [] as YOYReport[]
@@ -46,25 +46,25 @@ const createVarAccount = (account: IFSAccountLabel, fcst: Variant, act: Variant,
 
     const actVol = act.validPartVolume()
     const fcstVol = fcst.validPartVolume()
-    if (!fcstVol) return acc // in case we have no volume just return empty
-      
-    
-    
-    if(acc.forecast==0)
-        acc.varianceVolume=0
-    else
-        acc.varianceVolume = ((actVol ?? 0) - fcstVol)*(acc.forecast/fcstVol)
-       
-    
 
-    acc.varVehicleVolumeRollOn = vehKPI.mixRollOn * vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.varianceVolume
-    acc.varVehicleVolumeRollOff = vehKPI.mixRollOff * vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.varianceVolume
-    acc.varVehicleVolumeVolume = vehKPI.mixVolume * vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.varianceVolume
+    if (!fcstVol || !actVol) // in case of no forecast or no actual - put variance in volume and return
+    {
+        acc.varianceVolume = acc.variance()
+        return acc
+    }
+
+    //we have forecast and actual - proceed with variance calcs
+
+    acc.varianceVolume = (actVol - fcstVol) * (acc.forecast / fcstVol)
+
+    acc.varVehicleVolumeRollOn = vehKPI.mixRollOn * (vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance) * acc.varianceVolume
+    acc.varVehicleVolumeRollOff = vehKPI.mixRollOff * (vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance) * acc.varianceVolume
+    acc.varVehicleVolumeVolume = vehKPI.mixVolume * (vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance) * acc.varianceVolume
 
     acc.varIRateRollOn = vehKPI.mixRollOn * (vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance) * acc.varianceVolume
     acc.varIRateRollOff = vehKPI.mixRollOff * (vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance) * acc.varianceVolume
     acc.varIRateVolume = vehKPI.mixVolume * (vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance) * acc.varianceVolume
-    
+
     return acc
 
 }
