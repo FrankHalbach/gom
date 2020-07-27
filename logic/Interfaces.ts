@@ -100,9 +100,13 @@ export interface YOYReport {
 }
 
 export interface VehicleVarianceKPI{
-    partVolumeVariance:number,
+    /**total part volume from vehicle volume (irate*volume) */
+    partVolumeVariance:number,  
+    /**part volume from vehicle volume variance */
     partVolumeVarianceVehicle:number,
+    /**part volume from irate variance) */
     partVolumeVarianceIRate:number,
+
     mixRollOn:number,
     mixRollOff:number,
     mixVolume:number   

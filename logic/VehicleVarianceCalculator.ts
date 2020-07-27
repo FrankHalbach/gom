@@ -3,15 +3,14 @@ import { Variant, VehicleVarianceKPI, IFSAccountLabel, YOYOptions, Vehicle } fro
 
 export const calcVehicleKPIs = (forecast: Variant, actual: Variant): VehicleVarianceKPI => {
 
-
-    const kpi = {partVolumeVariance:0,partVolumeVarianceVehicle:0,partVolumeVarianceIRate:0,mixRollOn:0,mixRollOff:0,mixVolume:0} as VehicleVarianceKPI
-    if (forecast.vehicles.length == 0 || actual.vehicles.length == 0)
-    return kpi // return empty        
+    const kpi = { partVolumeVariance: 0, partVolumeVarianceVehicle: 0, partVolumeVarianceIRate: 0, mixRollOn: 0, mixRollOff: 0, mixVolume: 0 } as VehicleVarianceKPI
 
     const fcstVol = forecast.volumeAccounts().find(a => a.label == IFSAccountLabel.Volume_Vehicle)?.value ?? 0
     const actVol = actual.volumeAccounts().find(a => a.label == IFSAccountLabel.Volume_Vehicle)?.value ?? 0
+     kpi.partVolumeVariance = actVol - fcstVol
 
-    kpi.partVolumeVariance = actVol - fcstVol
+    if (forecast.vehicles.length == 0 || actual.vehicles.length == 0)
+        return kpi // return empty  
 
     // todo: need mix for act and fcst?
     const totPartVolume = actual.vehicles.map(v => v.partVolume()).reduce((a, b) => a + b, 0)
@@ -44,7 +43,7 @@ export const calcVehicleKPIs = (forecast: Variant, actual: Variant): VehicleVari
     kpi.partVolumeVarianceVehicle = partVolVehVar
     kpi.partVolumeVarianceIRate = partIRateVehVar
 
-    return kpi  
+    return kpi
 
 
 }
