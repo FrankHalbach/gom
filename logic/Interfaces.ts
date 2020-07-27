@@ -105,7 +105,6 @@ export interface VehicleVarianceKPI{
     partVolumeVarianceIRate:number,
     mixRollOn:number,
     mixRollOff:number,
-    mixVolume:number,
-    
+    mixVolume:number   
 
 }

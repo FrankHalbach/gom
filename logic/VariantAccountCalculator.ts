@@ -3,7 +3,7 @@
     inputs: Variant, Accounts
 */
 
-import { IFSAccount, IFSAccountLabel, Variant, ReasonCode } from '~/logic/Interfaces'
+import { IFSAccount, IFSAccountLabel, Variant, ReasonCode, SalesPrice } from '~/logic/Interfaces'
 import { validPartVolume } from '~/logic/ValidPartVolumeCaculator'
 
 
@@ -65,7 +65,6 @@ export const calcSalesAccounts = (variant: Variant): IFSAccount[] => {
     salesAccounts.push({ label:IFSAccountLabel.Sales_Var, value: salesVar})
     salesAccounts.push({ label: IFSAccountLabel.NetSales, value: finalNetSales})
   
-
    
     return salesAccounts
 
@@ -73,7 +72,12 @@ export const calcSalesAccounts = (variant: Variant): IFSAccount[] => {
 
 const getPriceSum = (variant: Variant, reasonCode?: ReasonCode): number => {
 
-    const prices = reasonCode ? variant.salesPrice.filter(s => s.reasonCode == reasonCode) : variant.salesPrice
+    let prices:SalesPrice[];
+    
+    if(reasonCode == undefined) //get all prices changes
+        prices = variant.salesPrice
+    else   //filter by reason code
+        prices = variant.salesPrice.filter(s => s.reasonCode == reasonCode)
 
     if (prices.length == 0)
         return 0

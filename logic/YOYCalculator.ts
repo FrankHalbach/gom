@@ -41,27 +41,25 @@ const createVarAccount=(account:IFSAccountLabel,fcst:Variant,act:Variant, vehKPI
     const acc = {} as YOYReport
 
     acc.account = account
-    acc.forecast = fcst.salesAccounts().find(a=>a.label==account)?.value?? 0
-    acc.actual = act.salesAccounts().find(a=>a.label==account)?.value?? 0 
+    acc.forecast = fcst.salesAccounts().find(a=>a.label==account)?.value ?? 0
+    acc.actual = act.salesAccounts().find(a=>a.label==account)?.value ?? 0 
     acc.variance = () => acc.actual-acc.forecast 
-    
-    const fcstVol= fcst.validPartVolume() 
-    
+    acc.varTotVehicleVolume = () => acc.varVehicleVolumeRollOn + acc.varVehicleVolumeRollOff + acc.varVehicleVolumeVolume
+    acc.varTotIRateVolume = () => acc.varIRateRollOn + acc.varIRateRollOff + acc.varIRateVolume
+    acc.varPrice = calcPriceVariance(fcst,act,account)
+
+    const fcstVol= fcst.validPartVolume()     
     if(!fcstVol) return acc // in case we have no voluem just return empty
 
-    acc.varianceVolume =  vehKPI.partVolumeVariance * (acc.forecast/fcstVol) //(act_vol-fcst_vol)*avg price fcst       // this is total variance, just need volume variance
+    acc.varianceVolume =  vehKPI.partVolumeVariance * (acc.forecast/fcstVol) //(act_vol-fcst_vol)*avg price fcst       
+    acc.varVehicleVolumeRollOn = vehKPI.mixRollOn *  vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.varianceVolume
+    acc.varVehicleVolumeRollOff = vehKPI.mixRollOff * vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.varianceVolume
+    acc.varVehicleVolumeVolume = vehKPI.mixVolume * vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.varianceVolume
 
-    acc.varVehicleVolumeRollOn = vehKPI.mixRollOn *  vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.varianceVolume,
-    acc.varVehicleVolumeRollOff = vehKPI.mixRollOff * vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.varianceVolume,
-    acc.varVehicleVolumeVolume = vehKPI.mixVolume * vehKPI.partVolumeVarianceVehicle / vehKPI.partVolumeVariance * acc.varianceVolume,
-    acc.varTotVehicleVolume = () => acc.varVehicleVolumeRollOn+acc.varVehicleVolumeRollOff+acc.varVehicleVolumeVolume
-
-    acc.varIRateRollOn = vehKPI.mixRollOn * vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance * acc.varianceVolume,
-    acc.varIRateRollOff = vehKPI.mixRollOff * vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance * acc.varianceVolume,
-    acc.varIRateVolume = vehKPI.mixVolume * vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance * acc.varianceVolume,
-    acc.varTotIRateVolume = () => acc.varIRateRollOn+acc.varIRateRollOff+acc.varIRateVolume
-
-    acc.varPrice = calcPriceVariance(fcst,act,account);
+    acc.varIRateRollOn = vehKPI.mixRollOn * vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance * acc.varianceVolume
+    acc.varIRateRollOff = vehKPI.mixRollOff * vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance * acc.varianceVolume
+    acc.varIRateVolume = vehKPI.mixVolume * vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance * acc.varianceVolume
+ 
 
     return acc
  

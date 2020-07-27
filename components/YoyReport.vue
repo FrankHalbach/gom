@@ -43,14 +43,15 @@
             <th class="text-left">Forecast</th>
             <th class="text-left">Actual</th>
             <th class="text-left">Variance</th>
-            <th v-if="checked" class="text-left">Variance Vehicle Volume - RollOn</th>
-            <th v-if="checked" class="text-left">Variance Vehicle Volume - RollOff</th>
-            <th v-if="checked" class="text-left">Variance Vehicle Volume - Volume</th>
-            <th class="text-left">Variance Vehicle Volume - Total</th>
-            <th v-if="checked" class="text-left">Variance IRate - RollOn</th>
-            <th v-if="checked" class="text-left">Variance IRate - RollOff</th>
-            <th v-if="checked" class="text-left">Variance IRate - Volume</th>
-            <th class="text-left">Variance IRate - Total</th>
+            <th class="text-left">Variance Volume</th>
+            <th v-if="checked" class="text-left">Variance Volume - Vehicle - RollOn</th>
+            <th v-if="checked" class="text-left">Variance Volume - Vehicle - RollOff</th>
+            <th v-if="checked" class="text-left">Variance Volume - Vehicle - Volume</th>
+            <th class="text-left">Variance Volume - Vehicle - Total</th>
+            <th v-if="checked" class="text-left">Variance Volume - IRate - RollOn</th>
+            <th v-if="checked" class="text-left">Variance Volume - IRate - RollOff</th>
+            <th v-if="checked" class="text-left">Variance Volume - IRate - Volume</th>
+            <th class="text-left">Variance Volume - IRate - Total</th>
             <th class="text-left">Variance Price</th>
           </tr>
         </thead>
@@ -60,6 +61,7 @@
             <td>{{ formatNbr(acc.forecast) }}</td>
             <td>{{ formatNbr(acc.actual) }}</td>
             <td>{{ formatNbr(acc.variance()) }}</td>
+            <td>{{ formatNbr(acc.varianceVolume) }}</td>
             <td v-if="checked" >{{ formatNbr(acc.varVehicleVolumeRollOn) }}</td>
             <td v-if="checked" >{{ formatNbr(acc.varVehicleVolumeRollOff) }}</td>
             <td v-if="checked" >{{ formatNbr(acc.varVehicleVolumeVolume) }}</td>
@@ -98,7 +100,7 @@ export default Vue.extend({
     checked:true
   }),
   computed: {
-    report(): YOYReport[] {
+    report(): YOYReport[] {      
       return calcYOYReport(this.forecast, this.actual);
     },
     vehicleKPI(): VehicleVarianceKPI {

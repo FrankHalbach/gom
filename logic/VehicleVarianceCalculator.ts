@@ -3,11 +3,10 @@ import { Variant, VehicleVarianceKPI, IFSAccountLabel, YOYOptions, Vehicle } fro
 
 export const calcVehicleKPIs = (forecast: Variant, actual: Variant): VehicleVarianceKPI => {
 
+
+    const kpi = {partVolumeVariance:0,partVolumeVarianceVehicle:0,partVolumeVarianceIRate:0,mixRollOn:0,mixRollOff:0,mixVolume:0} as VehicleVarianceKPI
     if (forecast.vehicles.length == 0 || actual.vehicles.length == 0)
-        throw new Error("cannot compute Variance, no vehicles found")
-
-    const kpi = {} as VehicleVarianceKPI
-
+    return kpi // return empty        
 
     const fcstVol = forecast.volumeAccounts().find(a => a.label == IFSAccountLabel.Volume_Vehicle)?.value ?? 0
     const actVol = actual.volumeAccounts().find(a => a.label == IFSAccountLabel.Volume_Vehicle)?.value ?? 0
