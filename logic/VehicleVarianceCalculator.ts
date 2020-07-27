@@ -35,8 +35,8 @@ export const calcVehicleKPIs = (forecast: Variant, actual: Variant): VehicleVari
     let partIRateVehVar = 0
 
     names.forEach(name => {
-        let fcst = forecast.vehicles.find(n => n.title == name) ?? null
-        let act = actual.vehicles.find(n => n.title == name) ?? null
+        let fcst = forecast.vehicles.find(n => n.title == name) ?? null   //assumes name exist only 1 time!
+        let act = actual.vehicles.find(n => n.title == name) ?? null    //assumes name exist only 1 time!
         partVolVehVar += calcVehiclePartVolumeVariance(fcst, act)
         partIRateVehVar += calcVehicleIRateVariance(fcst, act)
     });
