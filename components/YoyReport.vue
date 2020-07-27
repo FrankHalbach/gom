@@ -1,36 +1,48 @@
 <template>
   <v-container fluid>
     <v-row>
-        <v-text-field
-          dense
-          readonly
-          label="Part Volume Variance"
-          :value="vehicleKPI.partVolumeVariance"
-          type="number"
-        ></v-text-field>  
-        <v-text-field
-          dense
-          readonly
-          label="Mix Vehicle Volume"
-          :value="vehicleKPI.partVolumeVarianceVehicle"
-          type="number"
-        ></v-text-field>
-        <v-text-field
-          dense
-          readonly
-          label="Mix Irate"
-          :value="vehicleKPI.partVolumeVarianceIRate"
-          type="number"
-        ></v-text-field>
-        <v-text-field dense readonly label="Mix RollOn" :value="vehicleKPI.mixRollOn" type="number"></v-text-field>
-        <v-text-field
-          dense
-          readonly
-          label="Mix RollOff"
-          :value="vehicleKPI.mixRollOff"
-          type="number"
-        ></v-text-field>
-        <v-text-field dense readonly label="Mix Volume" :value="vehicleKPI.mixVolume" type="number"></v-text-field>    
+      <v-text-field
+        dense
+        readonly
+        label="Part Volume Variance"
+        :value="formatNbr(vehicleKPI.partVolumeVariance,2)"
+        type="number"
+      ></v-text-field>
+      <v-text-field
+        dense
+        readonly
+        label="Part Volume Variance - Vehicle Volume"
+        :value="formatNbr(vehicleKPI.partVolumeVarianceVehicle,2)"
+        type="number"
+      ></v-text-field>
+      <v-text-field
+        dense
+        readonly
+        label="Part Volume Variance - IRate"
+        :value="formatNbr(vehicleKPI.partVolumeVarianceIRate,2)"
+        type="number"
+      ></v-text-field>
+      <v-text-field
+        dense
+        readonly
+        label="Mix RollOn"
+        :value="formatNbr(vehicleKPI.mixRollOn,2)"
+        type="number"
+      ></v-text-field>
+      <v-text-field
+        dense
+        readonly
+        label="Mix RollOff"
+        :value="formatNbr(vehicleKPI.mixRollOff,2)"
+        type="number"
+      ></v-text-field>
+      <v-text-field
+        dense
+        readonly
+        label="Mix Volume"
+        :value="formatNbr(vehicleKPI.mixVolume,2)"
+        type="number"
+      ></v-text-field>
     </v-row>
 
     <v-checkbox label="Show Variance Details" v-model="checked"></v-checkbox>
@@ -62,13 +74,13 @@
             <td>{{ formatNbr(acc.actual) }}</td>
             <td>{{ formatNbr(acc.variance()) }}</td>
             <td>{{ formatNbr(acc.varianceVolume) }}</td>
-            <td v-if="checked" >{{ formatNbr(acc.varVehicleVolumeRollOn) }}</td>
-            <td v-if="checked" >{{ formatNbr(acc.varVehicleVolumeRollOff) }}</td>
-            <td v-if="checked" >{{ formatNbr(acc.varVehicleVolumeVolume) }}</td>
+            <td v-if="checked">{{ formatNbr(acc.varVehicleVolumeRollOn) }}</td>
+            <td v-if="checked">{{ formatNbr(acc.varVehicleVolumeRollOff) }}</td>
+            <td v-if="checked">{{ formatNbr(acc.varVehicleVolumeVolume) }}</td>
             <td>{{ formatNbr(acc.varTotVehicleVolume()) }}</td>
-            <td v-if="checked" >{{ formatNbr(acc.varIRateRollOn) }}</td>
-            <td v-if="checked" >{{ formatNbr(acc.varIRateRollOff) }}</td>
-            <td v-if="checked" >{{ formatNbr(acc.varIRateVolume) }}</td>
+            <td v-if="checked">{{ formatNbr(acc.varIRateRollOn) }}</td>
+            <td v-if="checked">{{ formatNbr(acc.varIRateRollOff) }}</td>
+            <td v-if="checked">{{ formatNbr(acc.varIRateVolume) }}</td>
             <td>{{ formatNbr(acc.varTotIRateVolume()) }}</td>
             <td>{{ formatNbr(acc.varPrice) }}</td>
           </tr>
@@ -80,7 +92,12 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from "vue";
-import { Variant,YOYReport,IFSAccountLabel, VehicleVarianceKPI } from "~/logic/Interfaces";
+import {
+  Variant,
+  YOYReport,
+  IFSAccountLabel,
+  VehicleVarianceKPI,
+} from "~/logic/Interfaces";
 import { calcVehicleKPIs } from "~/logic/VehicleVarianceCalculator";
 import { calcYOYReport } from "~/logic/YOYCalculator";
 
@@ -96,11 +113,11 @@ export default Vue.extend({
       required: true,
     } as PropOptions<Variant>,
   },
-  data:()=>({
-    checked:true
+  data: () => ({
+    checked: true,
   }),
   computed: {
-    report(): YOYReport[] {      
+    report(): YOYReport[] {
       return calcYOYReport(this.forecast, this.actual);
     },
     vehicleKPI(): VehicleVarianceKPI {
@@ -108,10 +125,10 @@ export default Vue.extend({
     },
   },
   methods: {
-    formatNbr(value: number) {
+    formatNbr(value: number, digits: number | null) {
       return value?.toLocaleString(undefined, {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
+        minimumFractionDigits: digits ?? 0,
+        maximumFractionDigits: digits ?? 0,
       });
     },
     getAccountLabel(acc: IFSAccountLabel): String {

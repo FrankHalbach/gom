@@ -10,11 +10,11 @@
       <variant-editor :variant="actual" title="Actual"></variant-editor>
     </v-tab-item>
     <v-tab-item>
-      <v-card>
+      <v-card elevation="10">
         <v-card-title primary-title>YOY Report</v-card-title>
         <yoy-report :forecast="forecast" :actual="actual"></yoy-report>
-      </v-card>
-      <v-card>
+      </v-card>    
+      <v-card elevation="10" class="mt-2">
         <v-card-title primary-title>GOM Report</v-card-title>
         to be added next
       </v-card>

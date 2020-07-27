@@ -1,25 +1,27 @@
 <template>
   <v-row>
     <v-col cols="12" md="9">
-      <v-card min-height="500">
+      <v-card elevation="10" min-height="500">
         <v-card-title primary-title>Inputs</v-card-title>
 
-        <v-tabs vertical>
+        <v-tabs vertical >
           <v-tab>Sales Prices</v-tab>
           <v-tab>Vehicles</v-tab>
           <v-tab>Part Volume</v-tab>
 
           <v-tab-item>
+            <v-btn small color="success" @click="addPrice">Add Price</v-btn>
             <sales-price-editor
               v-for="(sp,i) in variant.salesPrice"
               :key="i"
               :salesPrice="sp"
               @delete="deletePrice(i)"
             ></sales-price-editor>
-            <v-btn small color="success" @click="addPrice">Add Price</v-btn>
+            
           </v-tab-item>
-          <v-tab-item>
-            <v-alert type="error" :value="!vehiclesTitlesUnique">
+          <v-tab-item>            
+            <v-btn small color="success" @click="addVehicle">Add Vehicle</v-btn>            
+            <v-alert  type="error" :value="!vehiclesTitlesUnique">
             Vehicle titles must be UNIQUE, don't use same title multiple times.
             </v-alert>
             
@@ -40,7 +42,7 @@
                 </v-row>
               </template>
             </v-data-iterator>         
-            <v-btn small color="success" @click="addVehicle">Add Vehicle</v-btn>
+          
           </v-tab-item>
           <v-tab-item>
             <part-volume-editor v-model="variant"/>           
@@ -49,7 +51,7 @@
       </v-card>
     </v-col>
     <v-col cols="12" md="3">
-      <v-card>
+      <v-card elevation="10">
         <v-card-title primary-title>Volume Accounts</v-card-title>
         <account-report :variant="variant"></account-report>
       </v-card>
