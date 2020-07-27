@@ -19,6 +19,10 @@
             <v-btn small color="success" @click="addPrice">Add Price</v-btn>
           </v-tab-item>
           <v-tab-item>
+            <v-alert type="error" :value="!vehiclesTitlesUnique">
+            Vehicle titles must be UNIQUE, don't use same title multiple times.
+            </v-alert>
+            
             <v-data-iterator :items="variant.vehicles">
               <template v-slot:default="props">
                 <v-row>
@@ -68,15 +72,17 @@ export default Vue.extend({
       type: String,
       default: "tbd",
     } as PropOptions<String>,
+  },  
+  computed:{
+    vehiclesTitlesUnique(){
+      const uniqueValues = new Set(this.variant.vehicles.map(v => v.title.toLowerCase()));
+      return uniqueValues.size == this.variant.vehicles.length               
+    }
   },
   methods: {
+    
     addVehicle() {
-      this.variant.addVehicle(
-        "tbd",
-        0,
-        1,
-        new Date(),
-        new Date(new Date().getFullYear() + 6, 0, 1)
+      this.variant.addVehicle("tbd",0,1,new Date(),new Date(new Date().getFullYear() + 6, 0, 1)
       );
     },
     deleteVehicle(i: number) {
