@@ -4,7 +4,9 @@ A simulation of growth over market kpi in automotive context
 I'm using Nuxt/vue for this rapid prototyp.
 
 Todo:
-- complete yoy variance calculation
+- complete yoy variance calculation 
+    - fx 
+    - override fallback
 - add gom calculation
 
 ## Build Setup
