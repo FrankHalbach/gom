@@ -1,13 +1,15 @@
 # gom
 
-A simulation of growth over market kpi in automotive context
-I'm using Nuxt/vue for this rapid prototyp.
+A simulation of system driven KPI calculation in automotive Tier1 context.
+I'm using Nuxt/Vue/Vuetify with typescript for this rapid prototyp.
+
 
 Todo:
 - complete yoy variance calculation 
-    - fx 
-    - override fallback
+    - fx     
 - add gom calculation
+
+Any input appreciated
 
 ## Build Setup
 

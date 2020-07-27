@@ -2,6 +2,9 @@
   <v-app dark>
     <v-app-bar clipped fixed app>
       <v-toolbar-title v-text="title" />
+      <v-spacer></v-spacer>
+      <v-btn text color="primary" to="/" nuxt>Simulator</v-btn>
+      <v-btn text color="primary" to="/about" nuxt>About</v-btn>
     </v-app-bar>
 
     <v-main>
@@ -16,7 +19,7 @@
 export default {
   data() {
     return {
-      title: "Growth Over Market Simulator",
+      title: "Year over Year Variance and Growth Over Market Simulator",
     };
   },
 };
