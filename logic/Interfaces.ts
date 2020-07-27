@@ -85,6 +85,7 @@ export interface YOYReport {
     forecast:number,
     actual:number,
     variance:()=>number,
+    varianceVolume:number,
     varVehicleVolumeRollOn:number,
     varVehicleVolumeRollOff:number,
     varVehicleVolumeVolume:number,
@@ -92,7 +93,9 @@ export interface YOYReport {
     varIRateRollOn:number,
     varIRateRollOff:number,
     varIRateVolume:number,
-    varTotIRateVolume:()=>number
+    varTotIRateVolume:()=>number,
+    varPrice:number,
+    varFX:number
 
 }
 

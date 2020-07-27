@@ -33,6 +33,8 @@
         <v-text-field dense readonly label="Mix Volume" :value="vehicleKPI.mixVolume" type="number"></v-text-field>    
     </v-row>
 
+    <v-checkbox label="Show Variance Details" v-model="checked"></v-checkbox>
+
     <v-simple-table dense>
       <template v-slot:default>
         <thead>
@@ -41,14 +43,15 @@
             <th class="text-left">Forecast</th>
             <th class="text-left">Actual</th>
             <th class="text-left">Variance</th>
-            <th class="text-left">Variance Vehicle Volume - RollOn</th>
-            <th class="text-left">Variance Vehicle Volume - RollOff</th>
-            <th class="text-left">Variance Vehicle Volume - Volume</th>
+            <th v-if="checked" class="text-left">Variance Vehicle Volume - RollOn</th>
+            <th v-if="checked" class="text-left">Variance Vehicle Volume - RollOff</th>
+            <th v-if="checked" class="text-left">Variance Vehicle Volume - Volume</th>
             <th class="text-left">Variance Vehicle Volume - Total</th>
-            <th class="text-left">Variance IRate - RollOn</th>
-            <th class="text-left">Variance IRate - RollOff</th>
-            <th class="text-left">Variance IRate - Volume</th>
+            <th v-if="checked" class="text-left">Variance IRate - RollOn</th>
+            <th v-if="checked" class="text-left">Variance IRate - RollOff</th>
+            <th v-if="checked" class="text-left">Variance IRate - Volume</th>
             <th class="text-left">Variance IRate - Total</th>
+            <th class="text-left">Variance Price</th>
           </tr>
         </thead>
         <tbody>
@@ -57,14 +60,15 @@
             <td>{{ formatNbr(acc.forecast) }}</td>
             <td>{{ formatNbr(acc.actual) }}</td>
             <td>{{ formatNbr(acc.variance()) }}</td>
-            <td>{{ formatNbr(acc.varVehicleVolumeRollOn) }}</td>
-            <td>{{ formatNbr(acc.varVehicleVolumeRollOff) }}</td>
-            <td>{{ formatNbr(acc.varVehicleVolumeVolume) }}</td>
+            <td v-if="checked" >{{ formatNbr(acc.varVehicleVolumeRollOn) }}</td>
+            <td v-if="checked" >{{ formatNbr(acc.varVehicleVolumeRollOff) }}</td>
+            <td v-if="checked" >{{ formatNbr(acc.varVehicleVolumeVolume) }}</td>
             <td>{{ formatNbr(acc.varTotVehicleVolume()) }}</td>
-            <td>{{ formatNbr(acc.varIRateRollOn) }}</td>
-            <td>{{ formatNbr(acc.varIRateRollOff) }}</td>
-            <td>{{ formatNbr(acc.varIRateVolume) }}</td>
+            <td v-if="checked" >{{ formatNbr(acc.varIRateRollOn) }}</td>
+            <td v-if="checked" >{{ formatNbr(acc.varIRateRollOff) }}</td>
+            <td v-if="checked" >{{ formatNbr(acc.varIRateVolume) }}</td>
             <td>{{ formatNbr(acc.varTotIRateVolume()) }}</td>
+            <td>{{ formatNbr(acc.varPrice) }}</td>
           </tr>
         </tbody>
       </template>
@@ -90,6 +94,9 @@ export default Vue.extend({
       required: true,
     } as PropOptions<Variant>,
   },
+  data:()=>({
+    checked:true
+  }),
   computed: {
     report(): YOYReport[] {
       return calcYOYReport(this.forecast, this.actual);

@@ -49,7 +49,6 @@ function createVariant(id: number, title: string): Variant {
     }
 
 
-
     return variant;
 }
 
