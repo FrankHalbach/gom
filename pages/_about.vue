@@ -7,8 +7,8 @@
 <script>
 export default {
   async asyncData({ $content, params }) {
-    const about = await $content(params.about).fetch();
-    return { about };
-  },
-};
+    const about = await $content(params.about).fetch()
+    return { about }
+  }
+}
 </script>

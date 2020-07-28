@@ -16,7 +16,7 @@
       </v-card>    
       <v-card elevation="10" class="mt-2">
         <v-card-title primary-title>GOM Report</v-card-title>
-        to be added next
+        <gom-report :forecast="forecast" :actual="actual"></gom-report>
       </v-card>
     </v-tab-item>
   </v-tabs>
@@ -29,7 +29,7 @@ import { forecast, actual } from "~/static/launchData";
 export default Vue.extend({
   data: () => ({
     forecast: forecast,
-    actual: actual,
-  }),
-});
+    actual: actual
+  })
+})
 </script>

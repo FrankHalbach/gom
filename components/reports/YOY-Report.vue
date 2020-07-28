@@ -102,7 +102,7 @@ import { calcVehicleKPIs } from "~/logic/VehicleVarianceCalculator";
 import { calcYOYReport } from "~/logic/YOYCalculator";
 
 export default Vue.extend({
-  name: "GOM-YOY-Report",
+  name: "YOY-Report",
   props: {
     forecast: {
       type: Object,

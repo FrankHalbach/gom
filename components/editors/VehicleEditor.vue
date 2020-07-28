@@ -46,7 +46,7 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from "vue";
-import { Vehicle, YOYOptions } from "../logic/Interfaces";
+import { Vehicle, YOYOptions } from "~/logic/Interfaces";
 
 export default Vue.extend({
   name: "VehicleEditor",

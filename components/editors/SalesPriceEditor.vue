@@ -32,7 +32,7 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from "vue";
-import { SalesPrice, ReasonCode } from "../logic/Interfaces";
+import { SalesPrice, ReasonCode } from "~/logic/Interfaces";
 
 export default Vue.extend({
   name: "SalesPriceEditor",

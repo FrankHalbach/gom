@@ -61,7 +61,7 @@
 
 <script lang="ts">
 import Vue, { PropOptions } from "vue";
-import { Variant, ReasonCode } from "../logic/Interfaces";
+import { Variant, ReasonCode } from "~/logic/Interfaces";
 
 export default Vue.extend({
   name: "VariantEditor",
