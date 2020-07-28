@@ -69,17 +69,9 @@ const calcVehiclePartVolumeVariance = (forecast: Vehicle | null, actual: Vehicle
 
 const calcVehicleIRateVariance = (forecast: Vehicle | null, actual: Vehicle | null): number => {
 
-    if (!forecast && !actual)
+    if (!forecast || !actual)
         return 0
-
-    if (!forecast && actual)
-        return 0
-
-    if (forecast && !actual)
-        return 0
-
-    if (actual && forecast)
-        return actual.volume * (actual.iRate - forecast.iRate) / 100
-
-    return 0
+    
+    return actual.volume * (actual.iRate - forecast.iRate) / 100
+    
 }
