@@ -99,6 +99,7 @@ export interface YOYReport {
 
 }
 
+
 export interface VehicleVarianceKPI{
     /**total part volume from vehicle volume (irate*volume) */
     partVolumeVariance:number,  
@@ -112,3 +113,40 @@ export interface VehicleVarianceKPI{
     mixVolume:number   
 
 }
+
+export interface GOMReportVehicleItem{
+    title:string,
+    forecastVolume:number,
+    actualVolume:number,
+    volumeVariance:()=>number,
+    forecastIRate:number,
+    actualIRate:number,
+    iRateVariance:()=>number,    
+    impliedActualIrate:()=>number,    
+    forecastPartVolume:()=>number,
+    actualPartVolume:()=>number,
+    partVolumeVariance:()=>number,
+    yoyBWMarket:()=>number
+
+}
+
+export interface GOMReport{
+    /* actual part volume from Variant */
+    actualPartVolume:number | null,
+    vehicles:GOMReportVehicleItem[],
+    forecastTotalVehicleVolume:()=>number,
+    actualTotalVehicleVolume:()=>number
+    varianceTotalVehicleVolume:()=>number,
+    forecastAvgIRate:()=>number,
+    actualAvgIRate:()=>number,
+    impliedActualIrate:()=>number,
+    AvgIRateVariance:()=>number,
+    forecastTotalPartVolume:()=>number,
+    actualTotalPartvolume:()=>number,
+    partTotalVolumeVariance:()=>number,
+    yoyTotalBWMarket:()=>number,
+    yoyGrowth:()=>number,
+    gom:()=>number
+
+}
+

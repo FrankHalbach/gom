@@ -1,7 +1,7 @@
 import { Variant, SalesPrice, Vehicle, ReasonCode, Actuals, PartVolumeForecast } from './Interfaces';
-import { calcYOYStatus } from './YOYStatusCalculator'
 import { calcVolumeAccounts, calcSalesAccounts } from '~/logic/VariantAccountCalculator'
 import { validPartVolume } from '~/logic/ValidPartVolumeCaculator'
+import { createVehicle } from '~/logic/Vehicle'
 
 
 function createVariant(id: number, title: string): Variant {
@@ -16,16 +16,10 @@ function createVariant(id: number, title: string): Variant {
     variant.volumeAccounts = () => calcVolumeAccounts(variant)
     variant.salesAccounts = () => calcSalesAccounts(variant)
 
+    variant.addVehicle
 
     variant.addVehicle = (title: string, volume: number, iRate: number, sopDate: Date, eopDate: Date) => {
-        const vehicle = {} as Vehicle;
-        vehicle.sop = sopDate
-        vehicle.eop = eopDate
-        vehicle.title = title
-        vehicle.volume = volume
-        vehicle.iRate = iRate
-        vehicle.partVolume = () => vehicle.volume * (vehicle.iRate / 100)
-        vehicle.yoyStatus = () => calcYOYStatus(vehicle)
+        const vehicle= createVehicle(title,volume,iRate,sopDate,eopDate)
         variant.vehicles.push(vehicle)
     }
 

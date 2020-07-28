@@ -1,5 +1,5 @@
 import { Variant, VehicleVarianceKPI, IFSAccountLabel, YOYOptions, Vehicle } from '~/logic/Interfaces'
-
+import { getUniqueVehicleTitles } from '~/logic/Vehicle'
 
 export const calcVehicleKPIs = (forecast: Variant, actual: Variant): VehicleVarianceKPI => {
 
@@ -28,7 +28,7 @@ export const calcVehicleKPIs = (forecast: Variant, actual: Variant): VehicleVari
     // strategy: join fcst&actu vehicle names and run calc for each name, save total
 
 
-    const names = [...new Set([...actual.vehicles.map(n => n.title), ...forecast.vehicles.map(n => n.title)])]
+    const names = getUniqueVehicleTitles(actual.vehicles,forecast.vehicles)
 
     let partVolVehVar = 0
     let partIRateVehVar = 0
