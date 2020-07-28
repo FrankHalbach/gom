@@ -64,6 +64,8 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
+    // Doc: https://github.com/nuxt/content
+    '@nuxt/content',
   ],
   /*
   ** vuetify module configuration
