@@ -130,8 +130,8 @@ export interface GOMReportVehicleItem{
     partVolumeVariance:()=>number,
 
     impliedActualIrate:()=>number | null,
-    yoyMarket:()=>number,    
-    yoyBWMarket:()=>number
+    marketGrowth:()=>number,    
+    betterWorseMarket:()=>number
 
 }
 
@@ -143,16 +143,18 @@ export interface GOMReport{
     forecastTotalVehicleVolume:()=>number,
     actualTotalVehicleVolume:()=>number
     varianceTotalVehicleVolume:()=>number,
+
     forecastAvgIRate:()=>number,
     actualAvgIRate:()=>number,
-    impliedActualIrate:()=>number,
     AvgIRateVariance:()=>number,
+        
     forecastTotalPartVolume:()=>number,
-    actualTotalPartvolume:()=>number,
-    partTotalVolumeVariance:()=>number,
-    yoyTotalBWMarket:()=>number,
-    yoyGrowth:()=>number,
-    gom:()=>number
+    actualTotalPartVolume:()=>number,
+    totalPartVolumeVariance:()=>number,
+    
+    impliedAvgActualIRate:()=>number,
+    totalMarketGrowth:()=>number,    
+    totalBetterWorseMarket:()=>number
 
 }
 

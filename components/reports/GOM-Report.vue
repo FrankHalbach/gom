@@ -1,54 +1,68 @@
 <template>
-     <v-simple-table dense>
-      <template v-slot:default>
-        <thead>
-          <tr>
-            <th class="text-left">Vehicle</th>
-            <th class="text-left">Volume - Forecst</th>
-            <th class="text-left">Volume - Actual </th>
-            <th class="text-left">Volume - Variance</th>            
-            <th class="text-left">IRate - Forecast</th>            
-            <th class="text-left">IRate - Actual</th>
-            <th class="text-left">IRate - Variance</th>
-            <th class="text-left">Implied IRate</th>            
-            <th class="text-left">Part Volume - Forecast</th>            
-            <th class="text-left">Part Volume - Actual</th>
-            <th class="text-left">Part Volume - Variance</th>
-            <th class="text-left">YOY Market</th>
-            <th class="text-left">B/W Market</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="v in report.vehicles" :key="v.title">
-            <td>{{ v.title }}</td>
-            <td>{{ formatNbr(v.forecastVolume) }}</td>
-            <td>{{ formatNbr(v.actualVolume) }}</td>
-            <td>{{ formatNbr(v.volumeVariance()) }}</td>
+  <v-simple-table dense>
+    <template v-slot:default>
+      <thead>
+        <tr>
+          <th class="text-left">Vehicle</th>
+          <th class="text-left">Volume - Forecst</th>
+          <th class="text-left">Volume - Actual</th>
+          <th class="text-left">Volume - Variance</th>
+          <th class="text-left">IRate - Forecast</th>
+          <th class="text-left">IRate - Actual</th>
+          <th class="text-left">IRate - Variance</th>
+          <th class="text-left">Implied IRate</th>
+          <th class="text-left">Part Volume - Forecast</th>
+          <th class="text-left">Part Volume - Actual</th>
+          <th class="text-left">Part Volume - Variance</th>
+          <th class="text-left">Market Growth</th>
+          <th class="text-left">B/W Market</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="v in report.vehicles" :key="v.title">
+          <td>{{ v.title }}</td>
+          <td>{{ formatNbr(v.forecastVolume) }}</td>
+          <td>{{ formatNbr(v.actualVolume) }}</td>
+          <td>{{ formatNbr(v.volumeVariance()) }}</td>
+          <td>{{ formatNbr(v.forecastIRate) }} %</td>
+          <td>{{ formatNbr(v.actualIRate) }} %</td>
+          <td>{{ formatNbr(v.iRateVariance()) }} %</td>
+          <td>{{ formatNbr(v.impliedActualIrate()) }} %</td>
+          <td>{{ formatNbr(v.forecastPartVolume) }}</td>
+          <td>{{ formatNbr(v.actualPartVolume) }}</td>
+          <td>{{ formatNbr(v.partVolumeVariance()) }}</td>
+          <td>{{ formatNbr(v.marketGrowth()) }}%</td>
+          <td>{{ formatNbr(v.betterWorseMarket()) }}%</td>
+        </tr>
 
-            <td>{{ formatNbr(v.forecastIRate) }} %</td>
-            <td>{{ formatNbr(v.actualIRate) }} %</td>
-            <td>{{ formatNbr(v.iRateVariance()) }} %</td>
-            <td>{{ formatNbr(v.impliedActualIrate()) }} %</td>
-
-            <td>{{ formatNbr(v.forecastPartVolume) }}</td>
-            <td>{{ formatNbr(v.actualPartVolume) }}</td>
-            <td>{{ formatNbr(v.partVolumeVariance()) }}</td>
-            <td>{{ formatNbr(v.yoyMarket()) }}%</td>
-            <td>{{ formatNbr(v.yoyBWMarket()) }}%</td>
-            
-          </tr>
-        </tbody>
-      </template>
-    </v-simple-table>
+        <!-- totals -->
+        <tr>
+          <td>Total</td>
+          <td>{{formatNbr(report.forecastTotalVehicleVolume())}}</td>
+          <td>{{formatNbr(report.actualTotalVehicleVolume())}}</td>
+          <td>{{formatNbr(report.varianceTotalVehicleVolume())}}</td>
+          <td>{{formatNbr(report.forecastAvgIRate())}}%</td>
+          <td>{{formatNbr(report.actualAvgIRate())}}%</td>
+          <td>{{formatNbr(report.AvgIRateVariance())}}%</td>
+          <td>{{formatNbr(report.impliedAvgActualIRate())}}%</td>
+          <td>{{formatNbr(report.forecastTotalPartVolume())}}</td>
+          <td>{{formatNbr(report.actualTotalPartVolume())}}</td>
+          <td>{{formatNbr(report.totalPartVolumeVariance())}}</td>
+          <td>{{formatNbr(report.totalMarketGrowth())}}%</td>
+          <td>{{formatNbr(report.totalBetterWorseMarket())}}%</td>
+        </tr>
+      </tbody>
+    </template>
+  </v-simple-table>
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from "vue"
-import { Variant,GOMReport} from '~/logic/Interfaces'
-import { calcYOYReport } from '~/logic/GOMCalculator'
+import Vue, { PropOptions } from "vue";
+import { Variant, GOMReport } from "~/logic/Interfaces";
+import { calcYOYReport } from "~/logic/GOMCalculator";
 export default Vue.extend({
-    name: "GOM-Report",
-    props: {
+  name: "GOM-Report",
+  props: {
     forecast: {
       type: Object,
       required: true,
@@ -56,12 +70,12 @@ export default Vue.extend({
     actual: {
       type: Object,
       required: true,
-    } as PropOptions<Variant>
+    } as PropOptions<Variant>,
   },
-   computed: {
+  computed: {
     report(): GOMReport {
       return calcYOYReport(this.forecast, this.actual);
-    }    
+    },
   },
   methods: {
     formatNbr(value: number, digits: number | null) {
@@ -69,7 +83,7 @@ export default Vue.extend({
         minimumFractionDigits: digits ?? 0,
         maximumFractionDigits: digits ?? 0,
       });
-    }
-  }
-})
+    },
+  },
+});
 </script>
