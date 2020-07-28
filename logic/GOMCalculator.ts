@@ -23,13 +23,16 @@ const report = {} as GOMReport
 //load actgual volume - night be null
 report.actualPartVolume=actual.actuals.volume
 report.vehicles=[] as GOMReportVehicleItem[]
+//ratio between report actual part volume from operations volume_actul and calculated actual from vehicle volume x irate
+const factor=():number | null=>(report.actualPartVolume ?? 0)/report.vehicles.map(v=>v.actualPartVolume).reduce((a, b) => a + b)
+
 
 const vehicleTitles = getUniqueVehicleTitles(forecast.vehicles,actual.vehicles)
 
 vehicleTitles.forEach(title => {
     let fcst = forecast.vehicles.find(n => n.title == title) ?? null   //assumes name exist only 1 time!
     let act = actual.vehicles.find(n => n.title == title) ?? null    //assumes name exist only 1 time!    
-    const vehicle:GOMReportVehicleItem=createItem(title,fcst,act)
+    const vehicle:GOMReportVehicleItem=createItem(title,fcst,act,factor)
     
     report.vehicles.push(vehicle)
     
@@ -41,7 +44,7 @@ return report
 }
 
 
-const createItem=(title:string,forecast:Vehicle | null, actual:Vehicle | null):GOMReportVehicleItem=>{
+const createItem=(title:string,forecast:Vehicle | null, actual:Vehicle | null, actualPartVolumeFactor:()=>number | null):GOMReportVehicleItem=>{
     const item = {} as GOMReportVehicleItem
     item.title=title 
     
@@ -53,12 +56,19 @@ const createItem=(title:string,forecast:Vehicle | null, actual:Vehicle | null):G
     item.actualIRate=actual?.iRate ?? 0 
     item.iRateVariance = ()=>item.actualIRate-item.forecastIRate
 
-    item.forecastPartVolume=()=>item.forecastVolume*item.forecastIRate        
-    item.actualPartVolume=()=>item.actualVolume*item.actualIRate
-    item.partVolumeVariance=()=>item.actualPartVolume()-item.forecastPartVolume()
+    item.forecastPartVolume=forecast?.partVolume() ?? 0
+    item.actualPartVolume=actual?.partVolume() ?? 0
+    
+    item.partVolumeVariance=()=>item.actualPartVolume-item.forecastPartVolume
         
-    item.impliedActualIrate=()=>0
-    item.yoyBWMarket=()=>0
+    item.impliedActualIrate=()=>{
+        const factor = actualPartVolumeFactor()
+        if(factor)
+        return factor*item.actualIRate
+        return null
+    }
+    item.yoyMarket=()=>(item.actualVolume-item.forecastVolume)/item.forecastVolume*100
+    item.yoyBWMarket=()=>(((item.impliedActualIrate() ?? item.actualIRate) - item.forecastIRate)/100 * item.actualVolume) /item.forecastVolume *100
 
     return item
 }

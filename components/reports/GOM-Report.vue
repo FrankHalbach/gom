@@ -10,9 +10,12 @@
             <th class="text-left">IRate - Forecast</th>            
             <th class="text-left">IRate - Actual</th>
             <th class="text-left">IRate - Variance</th>
+            <th class="text-left">Implied IRate</th>            
             <th class="text-left">Part Volume - Forecast</th>            
             <th class="text-left">Part Volume - Actual</th>
             <th class="text-left">Part Volume - Variance</th>
+            <th class="text-left">YOY Market</th>
+            <th class="text-left">B/W Market</th>
           </tr>
         </thead>
         <tbody>
@@ -25,10 +28,13 @@
             <td>{{ formatNbr(v.forecastIRate) }} %</td>
             <td>{{ formatNbr(v.actualIRate) }} %</td>
             <td>{{ formatNbr(v.iRateVariance()) }} %</td>
+            <td>{{ formatNbr(v.impliedActualIrate()) }} %</td>
 
-            <td>{{ formatNbr(v.forecastPartVolume()) }}</td>
-            <td>{{ formatNbr(v.actualPartVolume()) }}</td>
+            <td>{{ formatNbr(v.forecastPartVolume) }}</td>
+            <td>{{ formatNbr(v.actualPartVolume) }}</td>
             <td>{{ formatNbr(v.partVolumeVariance()) }}</td>
+            <td>{{ formatNbr(v.yoyMarket()) }}%</td>
+            <td>{{ formatNbr(v.yoyBWMarket()) }}%</td>
             
           </tr>
         </tbody>
