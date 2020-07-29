@@ -31,8 +31,8 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from "vue";
-import { SalesPrice, ReasonCode } from "~/logic/Interfaces";
+import Vue, { PropOptions } from "vue"
+import { SalesPrice, ReasonCode } from "~/logic/Interfaces"
 
 export default Vue.extend({
   name: "SalesPriceEditor",
@@ -46,15 +46,15 @@ export default Vue.extend({
     salesPriceOptions() {
       const keys = Object.keys(ReasonCode).filter(
         (k) => typeof ReasonCode[k as any] === "number"
-      ); 
+      )
       const values = keys.map((key) => ({
         id: ReasonCode[key as any],
-        title: key,
+        title: key
       }));
-      return values;
-    },
+      return values
+    }
   } 
-});
+})
 </script>
 
 <style>

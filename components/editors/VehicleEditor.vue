@@ -45,8 +45,8 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from "vue";
-import { Vehicle, YOYOptions } from "~/logic/Interfaces";
+import Vue, { PropOptions } from "vue"
+import { Vehicle, YOYOptions } from "~/logic/Interfaces"
 
 export default Vue.extend({
   name: "VehicleEditor",
@@ -58,12 +58,11 @@ export default Vue.extend({
   },
   computed: {
     yoyStatus() {
-      const idx: YOYOptions = (this.vehicle as Vehicle).yoyStatus();
-
-      return YOYOptions[idx];
-    },
-  },
-});
+      const idx: YOYOptions = (this.vehicle as Vehicle).yoyStatus()
+      return YOYOptions[idx]
+    }
+  }
+})
 </script>
 
 <style>

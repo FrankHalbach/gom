@@ -47,6 +47,7 @@ export default {
   ** https://nuxtjs.org/guide/plugins
   */
   plugins: [
+    {src:'~/plugins/formatter.ts'}
   ],
   /*
   ** Auto import components

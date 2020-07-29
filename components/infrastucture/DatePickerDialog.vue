@@ -42,14 +42,14 @@ export default Vue.extend({
   computed: {
     date: {
       get() {
-        return this.value.toISOString().substr(0, 10)
+        return (this as any).$getISODate(this.value);        
       },
       set(val: Date) {
         (this as any).$emit("input", new Date(val))
       },
     },
   },
-});
+})
 </script>
 
 <style>

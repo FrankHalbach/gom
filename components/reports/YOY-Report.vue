@@ -5,42 +5,42 @@
         dense
         readonly
         label="Part Volume Variance"
-        :value="formatNbr(vehicleKPI.partVolumeVariance,2)"
+        :value="$formatNbr(vehicleKPI.partVolumeVariance,2)"
         type="number"
       ></v-text-field>
       <v-text-field
         dense
         readonly
         label="Part Volume Variance - Vehicle Volume"
-        :value="formatNbr(vehicleKPI.partVolumeVarianceVehicle,2)"
+        :value="$formatNbr(vehicleKPI.partVolumeVarianceVehicle,2)"
         type="number"
       ></v-text-field>
       <v-text-field
         dense
         readonly
         label="Part Volume Variance - IRate"
-        :value="formatNbr(vehicleKPI.partVolumeVarianceIRate,2)"
+        :value="$formatNbr(vehicleKPI.partVolumeVarianceIRate,2)"
         type="number"
       ></v-text-field>
       <v-text-field
         dense
         readonly
-        label="Mix RollOn"
-        :value="formatNbr(vehicleKPI.mixRollOn,2)"
+        label="Mix RollOn"        
+        :value="$formatNbr(vehicleKPI.mixRollOn,2)"
         type="number"
       ></v-text-field>
       <v-text-field
         dense
         readonly
         label="Mix RollOff"
-        :value="formatNbr(vehicleKPI.mixRollOff,2)"
+        :value="$formatNbr(vehicleKPI.mixRollOff,2)"
         type="number"
       ></v-text-field>
       <v-text-field
         dense
         readonly
         label="Mix Volume"
-        :value="formatNbr(vehicleKPI.mixVolume,2)"
+        :value="$formatNbr(vehicleKPI.mixVolume,2)"
         type="number"
       ></v-text-field>
     </v-row>
@@ -69,20 +69,37 @@
         </thead>
         <tbody>
           <tr v-for="acc in report" :key="acc.label">
-            <td>{{ getAccountLabel(acc.account) }}</td>
-            <td>{{ formatNbr(acc.forecast) }}</td>
-            <td>{{ formatNbr(acc.actual) }}</td>
-            <td>{{ formatNbr(acc.variance()) }}</td>
-            <td>{{ formatNbr(acc.varianceVolume) }}</td>
-            <td v-if="checked">{{ formatNbr(acc.varVehicleVolumeRollOn) }}</td>
-            <td v-if="checked">{{ formatNbr(acc.varVehicleVolumeRollOff) }}</td>
-            <td v-if="checked">{{ formatNbr(acc.varVehicleVolumeVolume) }}</td>
-            <td>{{ formatNbr(acc.varTotVehicleVolume()) }}</td>
-            <td v-if="checked">{{ formatNbr(acc.varIRateRollOn) }}</td>
-            <td v-if="checked">{{ formatNbr(acc.varIRateRollOff) }}</td>
-            <td v-if="checked">{{ formatNbr(acc.varIRateVolume) }}</td>
-            <td>{{ formatNbr(acc.varTotIRateVolume()) }}</td>
-            <td>{{ formatNbr(acc.varPrice) }}</td>
+            <td>{{ $getAccountLabel(acc.account) }}</td>
+            <td>{{ $formatNbr(acc.forecast) }}</td>
+            <td>{{ $formatNbr(acc.actual) }}</td>
+            <td>{{ $formatNbr(acc.variance()) }}</td>
+            <td>{{ $formatNbr(acc.varianceVolume) }}</td>
+            <td v-if="checked">{{ $formatNbr(acc.varVehicleVolumeRollOn) }}</td>
+            <td v-if="checked">{{ $formatNbr(acc.varVehicleVolumeRollOff) }}</td>
+            <td v-if="checked">{{ $formatNbr(acc.varVehicleVolumeVolume) }}</td>
+            <td>{{ $formatNbr(acc.varTotVehicleVolume()) }}</td>
+            <td v-if="checked">{{ $formatNbr(acc.varIRateRollOn) }}</td>
+            <td v-if="checked">{{ $formatNbr(acc.varIRateRollOff) }}</td>
+            <td v-if="checked">{{ $formatNbr(acc.varIRateVolume) }}</td>
+            <td>{{ $formatNbr(acc.varTotIRateVolume()) }}</td>
+            <td>{{ $formatNbr(acc.varPrice) }}</td>
+          </tr>
+          <tr>
+            <td> b/(w) fcst %</td>
+            <td> </td>
+            <td> </td>
+            
+            <td>{{$formatNbr(netSalesItem.variance()/netSalesItem.forecast*100,1)}}% </td>
+            <td>{{$formatNbr(netSalesItem.varianceVolume/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="checked">{{$formatNbr(netSalesItem.varVehicleVolumeRollOn/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="checked">{{$formatNbr(netSalesItem.varVehicleVolumeRollOff/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="checked">{{$formatNbr(netSalesItem.varVehicleVolumeVolume/netSalesItem.forecast*100,1)}}% </td>
+            <td>{{$formatNbr(netSalesItem.varTotVehicleVolume()/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="checked">{{$formatNbr(netSalesItem.varIRateRollOn/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="checked">{{$formatNbr(netSalesItem.varIRateRollOn/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="checked">{{$formatNbr(netSalesItem.varIRateRollOn/netSalesItem.forecast*100,1)}}% </td>                        
+            <td>{{$formatNbr(netSalesItem.varTotIRateVolume()/netSalesItem.forecast*100,1)}}%  </td>
+            <td>{{$formatNbr(netSalesItem.varPrice/netSalesItem.forecast*100,1)}}%  </td>
           </tr>
         </tbody>
       </template>
@@ -118,22 +135,21 @@ export default Vue.extend({
   }),
   computed: {
     report(): YOYReport[] {
-      return calcYOYReport(this.forecast, this.actual);
+      return calcYOYReport(this.forecast, this.actual)
     },
     vehicleKPI(): VehicleVarianceKPI {
-      return calcVehicleKPIs(this.forecast, this.actual);
+      return calcVehicleKPIs(this.forecast, this.actual)
     },
+    netSalesItem():YOYReport | undefined {
+      return this.report.find(r=>r.account==IFSAccountLabel.NetSales)      
+    }
   },
-  methods: {
-    formatNbr(value: number, digits: number | null) {
-      return value?.toLocaleString(undefined, {
-        minimumFractionDigits: digits ?? 0,
-        maximumFractionDigits: digits ?? 0,
-      });
-    },
-    getAccountLabel(acc: IFSAccountLabel): String {
-      return IFSAccountLabel[acc];
-    },
-  },
+  methods:{
+    getVarianceInPercent(varAccount:string):number{
+      const item=this.netSalesItem
+      if(!item) return 0        
+      return (this as any).$formatNbr(item.variance()/item.actual *100,1)
+    }
+  }
 });
 </script>

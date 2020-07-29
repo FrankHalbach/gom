@@ -46,8 +46,8 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from "vue";
-import { Variant } from "~/logic/Interfaces";
+import Vue, { PropOptions } from "vue"
+import { Variant } from "~/logic/Interfaces"
 
 export default Vue.extend({
   name: "VariantPartVolumeEditor",
@@ -55,7 +55,7 @@ export default Vue.extend({
     value: {
       type: Object,
       required: true,
-    } as PropOptions<Variant>,
-  },
-});
+    } as PropOptions<Variant>
+  }
+})
 </script>

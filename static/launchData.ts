@@ -13,9 +13,9 @@ forecast.addSalesPrice(new Date(2019, 1, 1), ReasonCode.BasePrice, 100);
 forecast.addSalesPrice(new Date(2020, 1, 1), ReasonCode.LTA, -2);
 forecast.addSalesPrice(new Date(2020, 2, 1), ReasonCode.LTAP, -1);
 
-actual.addVehicle("Vehicle A", 1050, 5,new Date(2019,1,1),new Date(2024,12,1));
+actual.addVehicle("Vehicle A", 1050, 7,new Date(2019,1,1),new Date(2024,12,1));
 actual.addVehicle("Vehicle B", 1560, 10,new Date(2019,12,1),new Date(2025,1,1));
-actual.addVehicle("Vehicle C", 535, 45,new Date(2016,1,1),new Date(2020,12,1));
+actual.addVehicle("Vehicle C", 490, 55,new Date(2016,1,1),new Date(2020,12,1));
 
 actual.addSalesPrice(new Date(2019, 1, 1), ReasonCode.BasePrice, 100);
 actual.addSalesPrice(new Date(2020, 1, 1), ReasonCode.LTA, -2);

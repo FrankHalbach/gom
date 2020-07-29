@@ -60,8 +60,8 @@
 </template>
 
 <script lang="ts">
-import Vue, { PropOptions } from "vue";
-import { Variant, ReasonCode } from "~/logic/Interfaces";
+import Vue, { PropOptions } from "vue"
+import { Variant, ReasonCode } from "~/logic/Interfaces"
 
 export default Vue.extend({
   name: "VariantEditor",
@@ -81,23 +81,21 @@ export default Vue.extend({
       return uniqueValues.size == this.variant.vehicles.length               
     }
   },
-  methods: {
-    
+  methods: {    
     addVehicle() {
-      this.variant.addVehicle("tbd",0,1,new Date(),new Date(new Date().getFullYear() + 6, 0, 1)
-      );
+      this.variant.addVehicle("tbd",0,1,new Date(),new Date(new Date().getFullYear() + 6, 0, 1))
     },
     deleteVehicle(i: number) {
-      this.variant.vehicles.splice(-1);
+      this.variant.vehicles.splice(-1)
     },
     addPrice() {
-      this.variant.addSalesPrice(new Date(), ReasonCode.LTA, 0);
+      this.variant.addSalesPrice(new Date(), ReasonCode.LTA, 0)
     },
     deletePrice(i: number) {
-      this.variant.salesPrice.splice(-1);
-    },
-  },
-});
+      this.variant.salesPrice.splice(-1)
+    }
+  }
+})
 </script>
 
 <style>
