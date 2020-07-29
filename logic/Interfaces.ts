@@ -130,6 +130,7 @@ export interface GOMReportVehicleItem{
     partVolumeVariance:()=>number,
 
     impliedActualIrate:()=>number | null,
+    impliedActualPartVolume:()=> number | null,
     marketGrowth:()=>number,    
     betterWorseMarket:()=>number
 
@@ -153,6 +154,7 @@ export interface GOMReport{
     totalPartVolumeVariance:()=>number,
     
     impliedAvgActualIRate:()=>number,
+    
     totalMarketGrowth:()=>number,    
     totalBetterWorseMarket:()=>number
 

@@ -25,7 +25,8 @@ export const calcYOYReport = (forecast: Variant, actual: Variant): GOMReport => 
     report.vehicles = [] as GOMReportVehicleItem[]
 
     //ratio between report actual part volume from operations volume_actul and calculated actual from vehicle volume x irate
-    const factor = (): number | null => (report.actualPartVolume ?? 0) / report.vehicles.map(v => v.actualPartVolume).reduce((a, b) => a + b)
+    const factor = (): number | null => (report.actualPartVolume ?? 0) / report.vehicles.map(v => v.actualPartVolume).reduce((a, b) => a + b)   
+
     const vehicleTitles = getUniqueVehicleTitles(forecast.vehicles, actual.vehicles)
 
     vehicleTitles.forEach(title => {
@@ -37,21 +38,24 @@ export const calcYOYReport = (forecast: Variant, actual: Variant): GOMReport => 
 
     });
 
-    report.forecastTotalVehicleVolume = () => report.vehicles.map(v => v.forecastVolume).reduce((a, b) => a + b, 0)
+
+    
+
+    report.forecastTotalVehicleVolume = () => report.vehicles.map(v => v.forecastVolume).reduce((a, b) => a + b,0)
     report.actualTotalVehicleVolume = () => report.vehicles.map(v => v.actualVolume).reduce((a, b) => a + b, 0)
     report.varianceTotalVehicleVolume = () => report.actualTotalVehicleVolume() - report.forecastTotalVehicleVolume()
 
-    report.actualTotalPartVolume = () => report.vehicles.map(v => v.actualPartVolume).reduce((a, b) => a + b, 0)
-    report.forecastTotalPartVolume = () => report.vehicles.map(v => v.forecastPartVolume).reduce((a, b) => a + b, 0)
-    report.totalPartVolumeVariance = () => report.actualTotalPartVolume() - report.forecastTotalPartVolume()
+    report.actualTotalPartVolume = () => report.vehicles.map(v => v.actualPartVolume).reduce((a, b) => a + b, 0) //* (factor() ?? 1)
+    report.forecastTotalPartVolume = () => report.vehicles.map(v => v.forecastPartVolume).reduce((a, b) => a + b, 0) 
+    report.totalPartVolumeVariance = () => report.actualTotalPartVolume() - report.forecastTotalPartVolume() 
 
     report.forecastAvgIRate = () => report.forecastTotalPartVolume() / report.forecastTotalVehicleVolume() * 100
     report.actualAvgIRate = () => report.actualTotalPartVolume() / report.actualTotalVehicleVolume() * 100
     report.AvgIRateVariance = () => report.actualAvgIRate() - report.forecastAvgIRate()
 
-    report.impliedAvgActualIRate = () => (factor() ?? 1) * report.actualAvgIRate()
+    report.impliedAvgActualIRate = () => (factor() ?? 1) * report.actualAvgIRate()    
 
-    report.totalMarketGrowth = () => (report.actualTotalVehicleVolume() - report.forecastTotalVehicleVolume()) / report.forecastTotalVehicleVolume() * 100
+    report.totalMarketGrowth = () => (report.actualTotalVehicleVolume() - report.forecastTotalVehicleVolume()) / report.forecastTotalVehicleVolume() * 100    
     report.totalBetterWorseMarket = () => (report.impliedAvgActualIRate() ?? report.actualAvgIRate()) - report.forecastAvgIRate()
 
     return report
@@ -61,6 +65,10 @@ export const calcYOYReport = (forecast: Variant, actual: Variant): GOMReport => 
 
 const createItem = (title: string, forecast: Vehicle | null, actual: Vehicle | null, actualPartVolumeFactor: () => number | null): GOMReportVehicleItem => {
     const item = {} as GOMReportVehicleItem
+
+
+    
+
     item.title = title
 
     item.forecastVolume = forecast?.volume ?? 0
@@ -71,9 +79,8 @@ const createItem = (title: string, forecast: Vehicle | null, actual: Vehicle | n
     item.actualIRate = actual?.iRate ?? 0
     item.iRateVariance = () => item.actualIRate - item.forecastIRate
 
-    item.forecastPartVolume = forecast?.partVolume() ?? 0
-    item.actualPartVolume = actual?.partVolume() ?? 0
-
+    item.forecastPartVolume = forecast?.partVolume() ?? 0    
+    item.actualPartVolume = actual?.partVolume() ?? 0    
     item.partVolumeVariance = () => item.actualPartVolume - item.forecastPartVolume
 
     item.impliedActualIrate = () => {
@@ -82,6 +89,8 @@ const createItem = (title: string, forecast: Vehicle | null, actual: Vehicle | n
             return factor * item.actualIRate
         return null
     }
+
+    item.impliedActualPartVolume=()=>(item.impliedActualIrate() ?? 0 )/100*item.actualVolume
     item.marketGrowth = () => (item.actualVolume - item.forecastVolume) / item.forecastVolume * 100
 
     item.betterWorseMarket = () => (item.impliedActualIrate() ?? item.actualIRate) - item.forecastIRate
