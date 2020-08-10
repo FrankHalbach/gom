@@ -1,13 +1,9 @@
 # gom
 
-A simulation of system driven KPI calculation in automotive Tier1 context.
+A simulation of system driven KPI calculation in an automotive Tier1 context.
 I'm using Nuxt/Vue/Vuetify with typescript for this rapid prototyp.
+   
 
-
-Todo:
-- complete yoy variance calculation 
-    - fx     
-- add gom calculation
 
 Any input appreciated
 
