@@ -19,7 +19,7 @@
 export default {
   data() {
     return {
-      title: "Variance Caclulation and Growth Over Market Simulator",
+      title: "Variance Calculation and Growth Over Market Simulator",
     };
   },
 };
