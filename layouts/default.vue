@@ -19,7 +19,7 @@
 export default {
   data() {
     return {
-      title: "Year over Year Variance and Growth Over Market Simulator",
+      title: "Variance Caclulation and Growth Over Market Simulator",
     };
   },
 };

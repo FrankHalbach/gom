@@ -9,7 +9,7 @@ Inputs are sales price by reason code, vehicles with installation rate (IRate) a
 Base Price is the intial starting price at SOP (start of production) and other reason codes are price changes either decreasing or increasing the sales price.
 A calculator breaks total sales down by sales accounts. The sales accounts are tied to the reason codes. Base Price => Sales, LTA=> Sales_LTA. 
 Netsales is the sum of all price entries. A calculator also computes variances between actual and forecast by reason code and vehicle status. 
-Outputs are displayed on the GOM/YOY Report.
+Outputs are displayed on the Report tab.
    
 ## Code
 
