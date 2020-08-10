@@ -85,6 +85,8 @@ export interface YOYReport {
     forecast:number,
     actual:number,
     variance:()=>number,
+    marketGrowth:number,
+    mixVolume:()=>number,
     varianceVolume:number,
     varVehicleVolumeRollOn:number,
     varVehicleVolumeRollOff:number,
@@ -95,22 +97,27 @@ export interface YOYReport {
     varIRateVolume:number,
     varTotIRateVolume:()=>number,
     varPrice:number,
-    varFX:number
+    varFX:number,
+    netNBW:()=>number
 
 }
 
 
 export interface VehicleVarianceKPI{
-    /**total part volume from vehicle volume (irate*volume) */
+    /* total part volume from vehicle volume (irate*volume) */
     partVolumeVariance:number,  
-    /**part volume from vehicle volume variance */
+    /* part volume from vehicle volume variance */
     partVolumeVarianceVehicle:number,
-    /**part volume from irate variance) */
+    /* part volume from irate variance) */
     partVolumeVarianceIRate:number,
 
     mixRollOn:number,
     mixRollOff:number,
-    mixVolume:number   
+    mixVolume:number,
+  
+    /*  absolute variance between fcst and act divided by forecast */
+    marketGrowth:number
+
 
 }
 

@@ -45,7 +45,7 @@
       ></v-text-field>
     </v-row>
 
-    <v-checkbox label="Show Variance Details" v-model="checked"></v-checkbox>
+    <v-checkbox label="Show Variance Details" v-model="showDetails"></v-checkbox>
 
     <v-simple-table dense>
       <template v-slot:default>
@@ -56,13 +56,16 @@
             <th class="text-left">Actual</th>
             <th class="text-left">Variance</th>
             <th class="text-left">Variance Volume</th>
-            <th v-if="checked" class="text-left">Variance Volume - Vehicle - RollOn</th>
-            <th v-if="checked" class="text-left">Variance Volume - Vehicle - RollOff</th>
-            <th v-if="checked" class="text-left">Variance Volume - Vehicle - Volume</th>
+            <th class="text-left">Variance Volume - Vehicle - Market Growth</th>
+            <th class="text-left">Variance Volume - Vehicle - Market Mix</th>
+           
+            <th v-if="showDetails" class="text-left">Variance Volume - Vehicle - RollOn</th>
+            <th v-if="showDetails" class="text-left">Variance Volume - Vehicle - RollOff</th>
+            <th v-if="showDetails" class="text-left">Variance Volume - Vehicle - Volume</th>
             <th class="text-left">Variance Volume - Vehicle - Total</th>
-            <th v-if="checked" class="text-left">Variance Volume - IRate - RollOn</th>
-            <th v-if="checked" class="text-left">Variance Volume - IRate - RollOff</th>
-            <th v-if="checked" class="text-left">Variance Volume - IRate - Volume</th>
+            <th v-if="showDetails" class="text-left">Variance Volume - IRate - RollOn</th>
+            <th v-if="showDetails" class="text-left">Variance Volume - IRate - RollOff</th>
+            <th v-if="showDetails" class="text-left">Variance Volume - IRate - Volume</th>
             <th class="text-left">Variance Volume - IRate - Total</th>
             <th class="text-left">Variance Price</th>
           </tr>
@@ -74,13 +77,15 @@
             <td>{{ $formatNbr(acc.actual) }}</td>
             <td>{{ $formatNbr(acc.variance()) }}</td>
             <td>{{ $formatNbr(acc.varianceVolume) }}</td>
-            <td v-if="checked">{{ $formatNbr(acc.varVehicleVolumeRollOn) }}</td>
-            <td v-if="checked">{{ $formatNbr(acc.varVehicleVolumeRollOff) }}</td>
-            <td v-if="checked">{{ $formatNbr(acc.varVehicleVolumeVolume) }}</td>
+            <td>{{ $formatNbr(acc.marketGrowth) }}</td>
+            <td>{{ $formatNbr(acc.mixVolume()) }}</td>         
+            <td v-if="showDetails">{{ $formatNbr(acc.varVehicleVolumeRollOn) }}</td>
+            <td v-if="showDetails">{{ $formatNbr(acc.varVehicleVolumeRollOff) }}</td>
+            <td v-if="showDetails">{{ $formatNbr(acc.varVehicleVolumeVolume) }}</td>
             <td>{{ $formatNbr(acc.varTotVehicleVolume()) }}</td>
-            <td v-if="checked">{{ $formatNbr(acc.varIRateRollOn) }}</td>
-            <td v-if="checked">{{ $formatNbr(acc.varIRateRollOff) }}</td>
-            <td v-if="checked">{{ $formatNbr(acc.varIRateVolume) }}</td>
+            <td v-if="showDetails">{{ $formatNbr(acc.varIRateRollOn) }}</td>
+            <td v-if="showDetails">{{ $formatNbr(acc.varIRateRollOff) }}</td>
+            <td v-if="showDetails">{{ $formatNbr(acc.varIRateVolume) }}</td>
             <td>{{ $formatNbr(acc.varTotIRateVolume()) }}</td>
             <td>{{ $formatNbr(acc.varPrice) }}</td>
           </tr>
@@ -91,19 +96,23 @@
             
             <td>{{$formatNbr(netSalesItem.variance()/netSalesItem.forecast*100,1)}}% </td>
             <td>{{$formatNbr(netSalesItem.varianceVolume/netSalesItem.forecast*100,1)}}% </td>
-            <td v-if="checked">{{$formatNbr(netSalesItem.varVehicleVolumeRollOn/netSalesItem.forecast*100,1)}}% </td>
-            <td v-if="checked">{{$formatNbr(netSalesItem.varVehicleVolumeRollOff/netSalesItem.forecast*100,1)}}% </td>
-            <td v-if="checked">{{$formatNbr(netSalesItem.varVehicleVolumeVolume/netSalesItem.forecast*100,1)}}% </td>
+            <td>{{$formatNbr(netSalesItem.marketGrowth/netSalesItem.forecast*100,1)}}% </td>
+            <td>{{$formatNbr(netSalesItem.mixVolume()/netSalesItem.forecast*100,1)}}% </td>          
+            <td v-if="showDetails">{{$formatNbr(netSalesItem.varVehicleVolumeRollOn/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="showDetails">{{$formatNbr(netSalesItem.varVehicleVolumeRollOff/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="showDetails">{{$formatNbr(netSalesItem.varVehicleVolumeVolume/netSalesItem.forecast*100,1)}}% </td>
             <td>{{$formatNbr(netSalesItem.varTotVehicleVolume()/netSalesItem.forecast*100,1)}}% </td>
-            <td v-if="checked">{{$formatNbr(netSalesItem.varIRateRollOn/netSalesItem.forecast*100,1)}}% </td>
-            <td v-if="checked">{{$formatNbr(netSalesItem.varIRateRollOn/netSalesItem.forecast*100,1)}}% </td>
-            <td v-if="checked">{{$formatNbr(netSalesItem.varIRateRollOn/netSalesItem.forecast*100,1)}}% </td>                        
+            <td v-if="showDetails">{{$formatNbr(netSalesItem.varIRateRollOn/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="showDetails">{{$formatNbr(netSalesItem.varIRateRollOn/netSalesItem.forecast*100,1)}}% </td>
+            <td v-if="showDetails">{{$formatNbr(netSalesItem.varIRateRollOn/netSalesItem.forecast*100,1)}}% </td>                        
             <td>{{$formatNbr(netSalesItem.varTotIRateVolume()/netSalesItem.forecast*100,1)}}%  </td>
             <td>{{$formatNbr(netSalesItem.varPrice/netSalesItem.forecast*100,1)}}%  </td>
           </tr>
         </tbody>
       </template>
     </v-simple-table>
+    <br/>
+    <p>Net NBW: {{$formatNbr(netSalesItem.netNBW())}}</p>
   </v-container>
 </template>
 
@@ -131,7 +140,7 @@ export default Vue.extend({
     } as PropOptions<Variant>,
   },
   data: () => ({
-    checked: true,
+    showDetails : false,
   }),
   computed: {
     report(): YOYReport[] {

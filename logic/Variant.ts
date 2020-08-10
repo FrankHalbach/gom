@@ -16,8 +16,7 @@ function createVariant(id: number, title: string): Variant {
     variant.volumeAccounts = () => calcVolumeAccounts(variant)
     variant.salesAccounts = () => calcSalesAccounts(variant)
 
-    variant.addVehicle
-
+    
     variant.addVehicle = (title: string, volume: number, iRate: number, sopDate: Date, eopDate: Date) => {
         const vehicle= createVehicle(title,volume,iRate,sopDate,eopDate)
         variant.vehicles.push(vehicle)

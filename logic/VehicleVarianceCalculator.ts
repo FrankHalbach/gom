@@ -3,12 +3,12 @@ import { getUniqueVehicleTitles } from '~/logic/Vehicle'
 
 export const calcVehicleKPIs = (forecast: Variant, actual: Variant): VehicleVarianceKPI => {
 
-    const kpi = { partVolumeVariance: 0, partVolumeVarianceVehicle: 0, partVolumeVarianceIRate: 0, mixRollOn: 0, mixRollOff: 0, mixVolume: 0 } as VehicleVarianceKPI
+    const kpi = { partVolumeVariance: 0, partVolumeVarianceVehicle: 0, partVolumeVarianceIRate: 0, mixRollOn: 0, mixRollOff: 0, mixVolume: 0 , marketGrowth:0} as VehicleVarianceKPI
 
     const fcstVol = forecast.volumeAccounts().find(a => a.label == IFSAccountLabel.Volume_Vehicle)?.value ?? 0
     const actVol = actual.volumeAccounts().find(a => a.label == IFSAccountLabel.Volume_Vehicle)?.value ?? 0
-     kpi.partVolumeVariance = actVol - fcstVol
-
+    kpi.partVolumeVariance = actVol - fcstVol
+ 
     if (forecast.vehicles.length == 0 || actual.vehicles.length == 0)
         return kpi // return empty  
 
@@ -43,9 +43,25 @@ export const calcVehicleKPIs = (forecast: Variant, actual: Variant): VehicleVari
     kpi.partVolumeVarianceVehicle = partVolVehVar
     kpi.partVolumeVarianceIRate = partIRateVehVar
 
+
+ 
+    kpi.marketGrowth = calcMarketGrowth(forecast.vehicles,actual.vehicles)  //calc market growth
+
+
+
     return kpi
 
 
+}
+
+const calcMarketGrowth=(forecast:Vehicle[],actual:Vehicle[]):number=>{
+    if(forecast.length==0 || actual.length==0) return 0;
+
+    const fcstVol=forecast.map(v=>v.volume).reduce((a,b)=>a+b,0)
+    const actVol=actual.map(v=>v.volume).reduce((a,b)=>a+b,0)
+
+    const growth= (actVol-fcstVol)/fcstVol
+    return growth
 }
 
 const calcVehiclePartVolumeVariance = (forecast: Vehicle | null, actual: Vehicle | null): number => {

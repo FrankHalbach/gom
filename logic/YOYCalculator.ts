@@ -44,6 +44,12 @@ const createVarAccount = (account: IFSAccountLabel, fcst: Variant, act: Variant,
     acc.varTotIRateVolume = () => acc.varIRateRollOn + acc.varIRateRollOff + acc.varIRateVolume
     acc.varPrice = calcPriceVariance(fcst, act, account)
 
+    acc.marketGrowth = vehKPI.marketGrowth * acc.forecast
+    acc.mixVolume=()=> acc.varTotVehicleVolume()-acc.marketGrowth
+    acc.netNBW=()=>  (acc.varVehicleVolumeRollOn ?? 0) +(acc.varIRateRollOn ?? 0) + (acc.varVehicleVolumeRollOff ?? 0)+ (acc.varIRateRollOff ?? 0)
+    
+
+
     const actVol = act.validPartVolume()
     const fcstVol = fcst.validPartVolume()
 
@@ -65,6 +71,7 @@ const createVarAccount = (account: IFSAccountLabel, fcst: Variant, act: Variant,
     acc.varIRateRollOff = vehKPI.mixRollOff * (vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance) * acc.varianceVolume
     acc.varIRateVolume = vehKPI.mixVolume * (vehKPI.partVolumeVarianceIRate / vehKPI.partVolumeVariance) * acc.varianceVolume
 
+   
     return acc
 
 }
