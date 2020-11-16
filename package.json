@@ -10,13 +10,13 @@
     "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
   },
   "dependencies": {
-    "@nuxt/content": "^1.6.0",
-    "@nuxt/typescript-runtime": "^1.0.0",
-    "nuxt": "^2.14.1"
+    "@nuxt/content": "^1.10.0",
+    "@nuxt/typescript-runtime": "^2.0.0",
+    "nuxt": "^2.14.7"
   },
   "devDependencies": {
-    "@nuxt/types": "^2.14.1",
-    "@nuxt/typescript-build": "^2.0.2",
+    "@nuxt/types": "^2.14.7",
+    "@nuxt/typescript-build": "^2.0.3",
     "@nuxtjs/vuetify": "^1.11.2",
     "push-dir": "^0.4.1"
   }
